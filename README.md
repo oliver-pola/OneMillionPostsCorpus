@@ -20,3 +20,28 @@ Dietmar Schabus and Marcin Skowron
 Proceedings of the 11th International Conference on Language Resources and Evaluation (LREC 2018)
 pp. 1602-1605
 Miyazaki, Japan, May 2018
+
+---
+
+## Setup
+The corpus script will download, extract and mount the SQLite DB. Run something like this in the project folder:
+
+```
+pip install pipenv
+pipenv shell
+python corpus.py
+```
+
+The required Python modules are listed in the provided `Pipfile` and installed via the `pipenv` command.
+
+To test the DB connection content of all corpus tables is counted and should look like this:
+
+```
+Articles count = 12087
+Posts count = 1011773
+Newspaper_Staff count = 110
+Annotations count = 58568
+Annotations_consolidated count = 40567
+CrossValSplit count = 40567
+Categories count = 9
+```

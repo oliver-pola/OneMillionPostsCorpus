@@ -1,18 +1,20 @@
 # OneMillionPostsCorpus TODO
 Orga
 - Cluster Zugang (Oliver)
-  - ~~Daten mailen~~
-  - Zugang testen
-  - Tensorflow testen
+  - [x] Daten mailen
+  - [ ] Zugang testen
+  - [ ] Tensorflow testen
 - Git
-  - GitHub Konto mitteilen (Jens)
+  - [ ] GitHub Konto mitteilen (Jens)
 - Termine ?
 
 Projekt
-- Dataset besorgen
+- Dataset
+  - [x] Download
+  - [x] Zugang testen
 - Environment festlegen
-  - Python 3.7.1 ?
-  - Tensorflow 2.0 ?
+  - [ ] Python 3.7.5 oder lieber 3.8.0 ?
+  - [ ] Tensorflow 2.0 ?
 - DNN model
 
 Abschluss

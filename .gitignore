@@ -130,3 +130,6 @@ dmypy.json
 
 # Eigenes Zeugs
 *.pdf
+*.tar.bz2
+*.tmp
+data/
