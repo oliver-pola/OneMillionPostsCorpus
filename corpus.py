@@ -30,12 +30,18 @@ def get_conn():
 
 if __name__ == '__main__':
 	# Test
-    all_tables = ['Articles', 'Posts', 'Newspaper_Staff', 'Annotations', 'Annotations_consolidated', 'CrossValSplit', 'Categories']
     conn = get_conn()
-    print('Testing DB connection...')
+    all_tables = ['Articles', 'Posts', 'Newspaper_Staff', 'Annotations', 'Annotations_consolidated', 'CrossValSplit', 'Categories']
+    print('Test: Count tables...')
     cur = conn.cursor()
     for table in all_tables:
         cur.execute(f'SELECT COUNT(*) FROM {table}')
         rows = cur.fetchall()
         for row in rows:
             print(f'{table} count = {row[0]}')
+    print('Test: List Categories...')
+    cur = conn.cursor()
+    cur.execute(f'SELECT Name, Ord FROM Categories')
+    rows = cur.fetchall()
+    for row in rows:
+        print(f'Ord = {row[1]}, Name = {row[0]}')
