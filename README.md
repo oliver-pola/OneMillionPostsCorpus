@@ -28,11 +28,12 @@ The corpus script will download, extract and mount the SQLite DB. Run something 
 
 ```
 pip install pipenv
+pipenv install
 pipenv shell
 python corpus.py
 ```
 
-The required Python modules are listed in the provided `Pipfile` and installed via the `pipenv` command.
+The required Python modules are listed in the provided `Pipfile` and installed via the `pipenv install` command.
 
 To test the DB connection content of all corpus tables is counted and should look like this:
 
