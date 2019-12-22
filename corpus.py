@@ -33,14 +33,13 @@ def get_training(conn):
     cur = conn.cursor()
     x = [] # posts
     y = [] # categories
-    sql =   f'''SELECT ID_Post, Headline, Body FROM Posts
+    sql =   ''' SELECT ID_Post, Headline, Body FROM Posts
                 WHERE EXISTS
                 (SELECT 1 FROM Annotations_consolidated
                  WHERE Posts.ID_Post = Annotations_consolidated.ID_Post)
             '''
     cur.execute(sql)
-    rows = cur.fetchall()
-    for row in rows:
+    for row in cur.fetchall():
         id_post = row[0]
         # merge Headline, Body to one text entry
         x.append(merge_text(row[1], row[2]))
@@ -70,15 +69,15 @@ def get_categorylist(conn, id_post):
     ## Ord = 9, Name = ArgumentsUsed
     cur = conn.cursor()
     categories = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    sql =   f'''SELECT Ord, Value FROM Annotations_consolidated
+    sql =   ''' SELECT Ord, Value FROM Annotations_consolidated
                 JOIN Categories
                 ON Annotations_consolidated.Category = Categories.Name
-                WHERE ID_Post = {id_post}
+                WHERE ID_Post = ?
                 ORDER BY Ord
             '''
-    cur.execute(sql)
-    rows = cur.fetchall()
-    for row in rows:
+    param = (id_post, )
+    cur.execute(sql, param)
+    for row in cur.fetchall():
         categories[row[0] - 1] = row[1]
     return categories
 
@@ -86,20 +85,17 @@ def get_categorylist(conn, id_post):
 if __name__ == '__main__':
 	# Test
     conn = get_conn()
+    cur = conn.cursor()
     all_tables = ['Articles', 'Posts', 'Newspaper_Staff', 'Annotations', 'Annotations_consolidated', 'CrossValSplit', 'Categories']
     print('Test: Count tables...')
-    cur = conn.cursor()
     for table in all_tables:
         cur.execute(f'SELECT COUNT(*) FROM {table}')
-        rows = cur.fetchall()
-        for row in rows:
+        for row in cur.fetchall():
             print(f'{table} count = {row[0]}')
     print()
     print('Test: List Categories...')
-    cur = conn.cursor()
     cur.execute(f'SELECT Name, Ord FROM Categories')
-    rows = cur.fetchall()
-    for row in rows:
+    for row in cur.fetchall():
         print(f'Ord = {row[1]}, Name = {row[0]}')
     print()
     print('Test: Training data...')
