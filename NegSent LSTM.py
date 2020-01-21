@@ -10,25 +10,9 @@ from keras_preprocessing.sequence import pad_sequences
 
 import numpy as np
 
+import corpus
 
 
-
-
-
-def create_connection(db_file):
-    """ create a database connection to the SQLite database
-        specified by the db_file
-    :param db_file: database file
-    :return: Connection object or None
-    """
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-    except Error as e:
-        print(e)
-
-    print('connection up')
-    return conn
 
 
 def select_all_labled_posts(conn):
@@ -85,9 +69,7 @@ def longest(l):
 
 
 def main():
-
-    database = r'C:\Users\JBecker\Downloads\million_post_corpus.tar\million_post_corpus\million_post_corpus\corpus.sqlite3'
-    conn = create_connection(database)
+    conn = corpus.get_conn()
 
     with conn:
         posts = select_all_labled_posts(conn)
