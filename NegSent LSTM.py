@@ -72,27 +72,30 @@ def main():
     conn = corpus.get_conn()
 
     with conn:
-        posts = select_all_labled_posts(conn)
-        neg_posts = select_all_negative_sentiments(conn)
+        # posts = select_all_labled_posts(conn)
+        # neg_posts = select_all_negative_sentiments(conn)
+        x, y = corpus.get_training(conn)
 
-    docs = []
-    labels = []
+    # docs = []
+    # labels = []
 
-    neg_sent = []
-
-    for n in neg_posts:
-        neg_sent.append(n)
-
-    for d in posts:
-        docs.append(d[1])
-
-    labels = np.asarray(neg_sent)
+    # neg_sent = []
+    #
+    # for n in neg_posts:
+    #     neg_sent.append(n)
+    #
+    # for d in posts:
+    #     docs.append(d[1])
+    #
+    # labels = np.asarray(neg_sent)
+    labels = y[:,0] # only SentimentNegative
     #np.random.seed(1)
     #labels = np.random.randint(0, 2, 2500)
-    print(labels)
+    # print(labels)
 
     vocab_size = 5000
-    encoded_docs = [one_hot(d, vocab_size) for d in docs]
+    # encoded_docs = [one_hot(d, vocab_size) for d in docs]
+    encoded_docs = [one_hot(d, vocab_size) for d in x.tolist()]
 
     max_length = 100
     padded_docs = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
