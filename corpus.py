@@ -33,10 +33,50 @@ def get_training(conn):
     cur = conn.cursor()
     x = [] # posts
     y = [] # categories
+    # Select all posts that have any annotation, treating absent values as 0
+    # sql =   ''' SELECT ID_Post, Headline, Body FROM Posts
+    #             WHERE EXISTS
+    #             (SELECT 1 FROM Annotations_consolidated
+    #              WHERE Posts.ID_Post = Annotations_consolidated.ID_Post)
+    #         '''
+    # Select all posts that have annotations for each category
     sql =   ''' SELECT ID_Post, Headline, Body FROM Posts
                 WHERE EXISTS
                 (SELECT 1 FROM Annotations_consolidated
-                 WHERE Posts.ID_Post = Annotations_consolidated.ID_Post)
+                 WHERE Posts.ID_Post = Annotations_consolidated.ID_Post
+                 AND Category = 'SentimentNegative')
+                AND EXISTS
+                (SELECT 1 FROM Annotations_consolidated
+                 WHERE Posts.ID_Post = Annotations_consolidated.ID_Post
+                 AND Category = 'SentimentNeutral')
+                AND EXISTS
+                (SELECT 1 FROM Annotations_consolidated
+                 WHERE Posts.ID_Post = Annotations_consolidated.ID_Post
+                 AND Category = 'SentimentPositive')
+                AND EXISTS
+                (SELECT 1 FROM Annotations_consolidated
+                 WHERE Posts.ID_Post = Annotations_consolidated.ID_Post
+                 AND Category = 'OffTopic')
+                AND EXISTS
+                (SELECT 1 FROM Annotations_consolidated
+                 WHERE Posts.ID_Post = Annotations_consolidated.ID_Post
+                 AND Category = 'Inappropriate')
+                AND EXISTS
+                (SELECT 1 FROM Annotations_consolidated
+                 WHERE Posts.ID_Post = Annotations_consolidated.ID_Post
+                 AND Category = 'Discriminating')
+                AND EXISTS
+                (SELECT 1 FROM Annotations_consolidated
+                 WHERE Posts.ID_Post = Annotations_consolidated.ID_Post
+                 AND Category = 'PossiblyFeedback')
+                AND EXISTS
+                (SELECT 1 FROM Annotations_consolidated
+                 WHERE Posts.ID_Post = Annotations_consolidated.ID_Post
+                 AND Category = 'PersonalStories')
+                AND EXISTS
+                (SELECT 1 FROM Annotations_consolidated
+                 WHERE Posts.ID_Post = Annotations_consolidated.ID_Post
+                 AND Category = 'ArgumentsUsed')
             '''
     cur.execute(sql)
     for row in cur.fetchall():
@@ -64,6 +104,7 @@ def get_categorylist(conn, id_post):
     ## Ord = 3, Name = SentimentPositive
     ## Ord = 4, Name = OffTopic
     ## Ord = 5, Name = Inappropriate
+    ## Ord = 6, Name = Discriminating
     ## Ord = 7, Name = PossiblyFeedback
     ## Ord = 8, Name = PersonalStories
     ## Ord = 9, Name = ArgumentsUsed
