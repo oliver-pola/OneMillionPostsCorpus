@@ -105,6 +105,21 @@ def merge_text(a, b, separator='\r\n'):
         return f'{a}{separator}{b}'
 
 
+# translate category name to vector index by: corpus.categories['OffTopic']
+# translate index to category name by: list(corpus.categories)[3]
+categories = {
+    'SentimentNegative' : 0,
+    'SentimentNeutral'  : 1,
+    'SentimentPositive' : 2,
+    'OffTopic'          : 3,
+    'Inappropriate'     : 4,
+    'Discriminating'    : 5,
+    'PossiblyFeedback'  : 6,
+    'PersonalStories'   : 7,
+    'ArgumentsUsed'     : 8
+}
+
+
 def get_categorylist(conn, id_post):
     ## Categories content:
     ## Ord = 1, Name = SentimentNegative

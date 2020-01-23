@@ -94,7 +94,7 @@ def main():
     #     docs.append(d[1])
     #
     # labels = np.asarray(neg_sent)
-    labels = y[:,0] # only SentimentNegative
+    labels = y[:,corpus.categories['SentimentNegative']] # only SentimentNegative
     #np.random.seed(1)
     #labels = np.random.randint(0, 2, 2500)
     # print(labels)
