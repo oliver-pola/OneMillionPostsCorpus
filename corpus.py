@@ -5,6 +5,7 @@
 # Access corpus data
 
 import os
+import shutil
 import wget
 import tarfile
 import sqlite3
@@ -13,18 +14,25 @@ import numpy as np
 
 def get_conn():
     url = 'https://github.com/OFAI/million-post-corpus/releases/download/v1.0.0/million_post_corpus.tar.bz2'
-    db = 'data/corpus.sqlite3'
+    db = 'data/million_post_corpus/corpus.sqlite3'
     zip = os.path.split(url)[-1]
     if not os.path.exists(db):
-        if not os.path.exists(zip):
-            print('Downloading corpus file...')
-            wget.download(url, zip)
-            print()
-        print('Extract corpus DB...')
-        with tarfile.open(zip) as tar:
-            tar.extractall()
-        os.rename('million_post_corpus', 'data')
-        os.remove(zip)
+        old_db = 'data/corpus.sqlite3'
+        if os.path.exists(old_db):
+            print('Rearrange data dir...')
+            os.rename('data', 'million_post_corpus')
+        else:
+            if not os.path.exists(zip):
+                print('Downloading corpus file...')
+                wget.download(url, zip)
+                print()
+            print('Extract corpus DB...')
+            with tarfile.open(zip) as tar:
+                tar.extractall()
+        os.makedirs('data')
+        shutil.move('million_post_corpus', 'data')
+        if os.path.exists(zip):
+            os.remove(zip)
     conn = sqlite3.connect(db)
     return conn
 
