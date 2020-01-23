@@ -42,9 +42,11 @@ def get_embedding():
 
 if __name__ == '__main__':
 	# Test
-    embedding = get_embedding()
-    test = ['Dies', 'ist', 'ein', 'Test']
-    test = ['Dies', 'Test'] # not in vocabulary: ist, ein
-    print(test)
-    embedded = [embedding[w] for w in test]
-    print(embedded)
+    embed = get_embedding()
+    # words = ['Dies', 'ist', 'ein', 'Test']
+    words = ['Dies', 'Test'] # not in vocabulary: ist, ein
+    print(f'words = {words}')
+    indices = [embed.vocab[w].index for w in words]
+    print(f'indices = {indices}')
+    embedded = np.array([embed[w] for w in words])
+    print(f'embedded.shape = {embedded.shape}')
