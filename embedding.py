@@ -14,7 +14,7 @@ import gensim
 import corpus # just to ensure data dir is rearranged
 
 
-def get_embedding():
+def get_model():
     """ Word2Vec Embedding German
         Refrence: https://github.com/devmount/GermanWordEmbeddings
     """
@@ -36,17 +36,27 @@ def get_embedding():
         wget.download(vectors_url, vectors)
         print()
     print('Load Word2Vec embedding...')
-    embedding = gensim.models.KeyedVectors.load_word2vec_format(vectors, binary=True)
-    return embedding
+    model = gensim.models.KeyedVectors.load_word2vec_format(vectors, binary=True)
+    return model
+
+
+def apply(model, list_of_words):
+    filtered = filter(lambda w: w in model.vocab, list_of_words)
+    return np.array([model[w] for w in filtered])
+
+
+def indices(model, list_of_words):
+    filtered = filter(lambda w: w in model.vocab, list_of_words)
+    return np.array([model.vocab[w].index for w in filtered])
 
 
 if __name__ == '__main__':
 	# Test
-    embed = get_embedding()
-    # words = ['Dies', 'ist', 'ein', 'Test']
-    words = ['Dies', 'Test'] # not in vocabulary: ist, ein
+    model = get_model()
+    words = ['Dies', 'ist', 'ein', 'Test']
+    # words = ['Dies', 'Test'] # not in vocabulary: ist, ein
     print(f'words = {words}')
-    indices = [embed.vocab[w].index for w in words]
-    print(f'indices = {indices}')
-    embedded = np.array([embed[w] for w in words])
+    indi = indices(model, words)
+    print(f'indices = {indi}')
+    embedded = apply(model, words)
     print(f'embedded.shape = {embedded.shape}')
