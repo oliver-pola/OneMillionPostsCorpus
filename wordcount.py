@@ -31,6 +31,11 @@ if __name__ == '__main__':
     print(f'default filtered = {text_to_word_sequence(x[49])}')
     print(f'custom filtered = {text_to_word_sequence(x[49], filters=filters)}')
     print()
+    print('Test: Weird punctuation...')
+    text = "Wie,sieht's.mit/seltsam#formatiertem,Text:aus?"
+    print(f'text = {repr(text)}')
+    print(f'default filtered = {text_to_word_sequence(text)}')
+    print()
     print('Test: Word count...')
     tokenized = tokenize(x)
     count = []
