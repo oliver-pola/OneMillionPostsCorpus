@@ -29,7 +29,7 @@ def get_conn():
             print('Extract corpus DB...')
             with tarfile.open(zip) as tar:
                 tar.extractall()
-        os.makedirs('data')
+        os.makedirs('data', exist_ok=True)
         shutil.move('million_post_corpus', 'data')
         if os.path.exists(zip):
             os.remove(zip)

@@ -10,6 +10,8 @@ import wget
 import tarfile
 import numpy as np
 
+import corpus # just to ensure data dir is rearranged
+
 
 def get_embedding():
     """ Word2Vec Embedding German
@@ -19,7 +21,8 @@ def get_embedding():
     vectors_url = 'https://int-emb-word2vec-de-wiki.s3.eu-central-1.amazonaws.com/vectors.txt'
     vocab = 'data/word2vec/vocab.txt'
     vectors = 'data/word2vec/vectors.txt'
-    os.makedirs('data/word2vec')
+    corpus.get_conn() # just to ensure data dir is rearranged
+    os.makedirs('data/word2vec', exist_ok=True)
     if not os.path.exists(vocab):
         print('Downloading Word2Vec vocabulary...')
         wget.download(vocab_url, vocab)
