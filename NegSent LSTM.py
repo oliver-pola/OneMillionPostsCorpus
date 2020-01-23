@@ -1,3 +1,9 @@
+# OneMillionPostsCorpus
+# Deep Learning classification on a data set of german online discussions
+# Student Project by: Jens Becker, Julius Plehn, Oliver Pola
+#
+# LSTM model for category SentimentNegative only
+
 import sqlite3
 from sqlite3 import Error
 

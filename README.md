@@ -1,7 +1,7 @@
 # OneMillionPostsCorpus
 Deep Learning classification on a data set of german online discussions
 
-Student Project by: Jens ?, Julius Plehn, Oliver Pola
+Student Project by: Jens Becker, Julius Plehn, Oliver Pola
 
 In Seminar: [Deep Learning for Language and Speech Seminar 19/20](https://www.inf.uni-hamburg.de/en/inst/ab/lt/teaching/ma-lectures/dl-seminar1718.html), Language Technology Group, Uni Hamburg
 

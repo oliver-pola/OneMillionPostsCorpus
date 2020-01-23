@@ -1,6 +1,6 @@
 # OneMillionPostsCorpus
 # Deep Learning classification on a data set of german online discussions
-# Student Project by: Jens ?, Julius Plehn, Oliver Pola
+# Student Project by: Jens Becker, Julius Plehn, Oliver Pola
 #
 # Access corpus data
 
