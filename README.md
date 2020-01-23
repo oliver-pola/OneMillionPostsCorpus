@@ -46,3 +46,24 @@ Annotations_consolidated count = 40567
 CrossValSplit count = 40567
 Categories count = 9
 ```
+
+## Training
+The training can use a classifier for a single category or it can be done on all categories at once. Within the `pipenv shell` run:
+
+```
+python training.py < All | Category >
+```
+
+Where `Category` is one of these:
+
+```
+SentimentNegative
+SentimentNeutral
+SentimentPositive
+OffTopic
+Inappropriate
+Discriminating
+PossiblyFeedback
+PersonalStories
+ArgumentsUsed
+```
