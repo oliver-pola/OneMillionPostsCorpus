@@ -9,6 +9,7 @@ verify_ssl = true
 wget = "*"
 numpy = "*"
 tensorflow-gpu = "==2.0.0"
+gensim = "*"
 
 [requires]
 python_version = "3.7"
