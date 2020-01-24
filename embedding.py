@@ -37,10 +37,11 @@ def get_model():
         print()
     print('Load Word2Vec embedding...')
     model = gensim.models.KeyedVectors.load_word2vec_format(vectors, binary=True)
+    print(f'vocabulary size = {len(model.vocab)}')
     return model
 
 
-def apply(model, list_of_words):
+def vectors(model, list_of_words):
     filtered = filter(lambda w: w in model.vocab, list_of_words)
     return np.array([model[w] for w in filtered])
 
@@ -48,6 +49,27 @@ def apply(model, list_of_words):
 def indices(model, list_of_words):
     filtered = filter(lambda w: w in model.vocab, list_of_words)
     return np.array([model.vocab[w].index for w in filtered])
+
+
+def vocab_size(model):
+    return len(model.vocab)
+
+
+def embedding_dim(model):
+    return len(model[next(iter(model.vocab.keys()))])
+
+
+def matrix(model):
+    print('Build embedding matrix...')
+    # index 0 does not represent a word
+    embedding_matrix = np.zeros((vocab_size(model) + 1, embedding_dim(model)))
+    for word, item in model.vocab.items():
+        try:
+            embedding_matrix[item.index] = model[word]
+        except:
+            print(i, word)
+    print(f'embedding matrix shape = {embedding_matrix.shape}')
+    return embedding_matrix
 
 
 if __name__ == '__main__':
@@ -58,5 +80,5 @@ if __name__ == '__main__':
     print(f'words = {words}')
     indi = indices(model, words)
     print(f'indices = {indi}')
-    embedded = apply(model, words)
+    embedded = vectors(model, words)
     print(f'embedded.shape = {embedded.shape}')

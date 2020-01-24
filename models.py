@@ -9,13 +9,22 @@ import numpy as np
 from keras_preprocessing.text import one_hot
 from keras_preprocessing.sequence import pad_sequences
 
+import embedding
 
-vocab_size = 5000
-padded_length = 100
+
+embedding_model = embedding.get_model()
+
+vocab_size = embedding.vocab_size(embedding_model)
+embedding_dim = embedding.embedding_dim(embedding_model)
+# padded_length = 161 # holds the logest post from corpus, see wordcount.py
+padded_length = 80 # probably enough to get the idea of a post
+
+# corpus has CRLF and not LF only
+preprocessing_filters = '!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n\r'
 
 
 def preprocess(posts):
-    encoded = [one_hot(post, vocab_size) for post in posts.tolist()]
+    encoded = [one_hot(post, vocab_size, filters=preprocessing_filters) for post in posts.tolist()]
     padded = pad_sequences(encoded, maxlen=padded_length, padding='post')
     return padded
 
