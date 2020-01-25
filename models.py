@@ -6,7 +6,7 @@
 
 import numpy as np
 
-from keras_preprocessing.text import one_hot
+from keras_preprocessing.text import text_to_word_sequence
 from keras_preprocessing.sequence import pad_sequences
 
 import embedding
@@ -24,8 +24,11 @@ preprocessing_filters = '!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n\r'
 
 
 def preprocess(posts):
-    encoded = [one_hot(post, vocab_size, filters=preprocessing_filters) for post in posts.tolist()]
-    padded = pad_sequences(encoded, maxlen=padded_length, padding='post')
+    word_lists = [text_to_word_sequence(post, filters=preprocessing_filters) for post in posts.tolist()]
+    embedded = [embedding.indices(embedding_model, word_list) for word_list in word_lists]
+    del word_lists
+    padded = pad_sequences(embedded, maxlen=padded_length, padding='post')
+    del embedded
     return padded
 
 
@@ -36,8 +39,15 @@ def classifier():
 
     lstm_out = 128
 
+    global embedding_model
+    embedding_matrix = embedding.matrix(embedding_model)
+    del embedding_model
+
     model = tf.keras.Sequential()
-    model.add(tf.keras.layers.Embedding(vocab_size, 8, input_length=padded_length))
+    # index 0 does not represent a word -> vocab_size + 1
+    model.add(tf.keras.layers.Embedding(vocab_size + 1, embedding_dim, input_length=padded_length, trainable=False,
+        embeddings_initializer=tf.keras.initializers.Constant(embedding_matrix)))
+    del embedding_matrix
     model.add(tf.keras.layers.SpatialDropout1D(0.4))
     model.add(tf.keras.layers.LSTM(lstm_out, dropout=0.2, recurrent_dropout=0.2))
     model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))

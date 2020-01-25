@@ -8,21 +8,24 @@ import sys
 import numpy as np
 
 import corpus
-import models
 
 
 def single_category(category):
     """ Trains a model for given single category
     """
+    import models
+
     epochs = 50
 
     with corpus.get_conn() as conn:
         posts, label_vectors = corpus.get_training(conn)
 
     preprocessed = models.preprocess(posts)
+    del posts
 
     category_index = corpus.categories[category]
     labels = label_vectors[:,category_index]
+    del label_vectors
 
     model = models.classifier()
     model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=0.1)
@@ -31,13 +34,15 @@ def single_category(category):
 def all_categories():
     """ Trains a model for all categories at once
     """
+    import models
+
     epochs = 50
 
     with corpus.get_conn() as conn:
         posts, label_vectors = corpus.get_training(conn)
 
     preprocessed = models.preprocess(posts)
-    
+
     model = models.multi()
     # model.fit(preprocessed, label_vectors, epochs=epochs, verbose=2, validation_split=0.1)
 
