@@ -2,10 +2,10 @@
 Orga
 - Cluster Zugang (Oliver)
   - [x] Daten mailen
-  - [ ] Zugang testen
-  - [ ] Tensorflow testen
+  - [x] Zugang testen
+  - [ ] Tensorflow testen (nur CUDA<=9, vermutlich also kein TF 2.0?)
 - Git
-  - [ ] GitHub Konto mitteilen (Jens)
+  - [x] GitHub Konto mitteilen (Jens)
 - Termine ?
 
 Projekt
@@ -13,9 +13,11 @@ Projekt
   - [x] Download
   - [x] Zugang testen
 - Environment festlegen
-  - [ ] Python 3.7.5 oder lieber 3.8.0 ?
-  - [ ] Tensorflow 2.0 ?
+  - [x] Python 3.7.5, nicht 3.8
+  - [x] Tensorflow 2.0, nicht 2.1
 - DNN model
+  - [x] LSTM Ansatz
+  - [ ] Parameter und Dense Layer optimieren
 
 Abschluss
 - Präsentation
