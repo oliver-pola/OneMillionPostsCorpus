@@ -70,14 +70,18 @@ def get_model():
     return model
 
 
+def preprocess(list_of_words):
+    return [w.lower() for w in list_of_words]
+
+
 def vectors(model, list_of_words):
-    filtered = filter(lambda w: w in model.vocab, list_of_words)
-    return np.array([model[w] for w in filtered])
+    filtered = filter(lambda w: w in model.vocab, preprocess(list_of_words))
+    return [model[w] for w in filtered]
 
 
 def indices(model, list_of_words):
-    filtered = filter(lambda w: w in model.vocab, list_of_words)
-    return np.array([model.vocab[w].index for w in filtered])
+    filtered = filter(lambda w: w in model.vocab, preprocess(list_of_words))
+    return [model.vocab[w].index for w in filtered]
 
 
 def vocab_size(model):
@@ -109,5 +113,5 @@ if __name__ == '__main__':
     print(f'words = {words}')
     indi = indices(model, words)
     print(f'indices = {indi}')
-    embedded = vectors(model, words)
+    embedded = np.array(vectors(model, words))
     print(f'embedded.shape = {embedded.shape}')
