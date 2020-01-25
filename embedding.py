@@ -62,6 +62,7 @@ def get_model():
         print('Convert writing binary...')
         model.save_word2vec_format(vectors, binary=True)
         os.remove(vectors_txt)
+        del model
 
     print('Load Word2Vec embedding...')
     model = gensim.models.KeyedVectors.load_word2vec_format(vectors, binary=True)
