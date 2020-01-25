@@ -11,33 +11,62 @@ import tarfile
 import numpy as np
 import gensim
 
+from gensim.scripts.glove2word2vec import glove2word2vec
+
 import corpus # just to ensure data dir is rearranged
 
 
 def get_model():
     """ Word2Vec Embedding German
-        Refrence: https://github.com/devmount/GermanWordEmbeddings
+        Refrence: https://deepset.ai/german-word-embeddings
     """
     # https://deepset.ai/german-word-embeddings
     # vocab_url = 'https://int-emb-word2vec-de-wiki.s3.eu-central-1.amazonaws.com/vocab.txt'
     # vectors_url = 'https://int-emb-word2vec-de-wiki.s3.eu-central-1.amazonaws.com/vectors.txt'
     # vocab = 'data/word2vec/vocab.txt'
     # vectors = 'data/word2vec/vectors.txt'
-    vectors_url = 'http://cloud.devmount.de/d2bc5672c523b086/german.model'
-    vectors = 'data/word2vec/german.model'
+
+    # Download GloVe version and convert, since the Word2Vec download seems to be malformatted
+    vectors_url = 'https://int-emb-glove-de-wiki.s3.eu-central-1.amazonaws.com/vectors.txt'
+    vectors_glove = 'data/word2vec/vectors_glove.txt'
+    vectors_txt = 'data/word2vec/vectors.txt'
+    vectors = 'data/word2vec/vectors.bin'
+
+    # https://github.com/devmount/GermanWordEmbeddings
+    # vectors_url = 'http://cloud.devmount.de/d2bc5672c523b086/german.model'
+    # vectors = 'data/word2vec/german.model'
+
     corpus.get_conn() # just to ensure data dir is rearranged
     os.makedirs('data/word2vec', exist_ok=True)
     # if not os.path.exists(vocab):
     #     print('Downloading Word2Vec vocabulary...')
     #     wget.download(vocab_url, vocab)
     #     print()
+    # if not os.path.exists(vectors):
+    #     print('Downloading Word2Vec vectors...')
+    #     wget.download(vectors_url, vectors)
+    #     print()
+
+    # Use GloVe version an convert to Word2Vec
     if not os.path.exists(vectors):
-        print('Downloading Word2Vec vectors...')
-        wget.download(vectors_url, vectors)
-        print()
+        if not os.path.exists(vectors_txt):
+            if not os.path.exists(vectors_glove):
+                print('Downloading GloVe vectors...')
+                wget.download(vectors_url, vectors_glove)
+                print()
+            print('Converting GloVe to Word2Vec...')
+            glove2word2vec(vectors_glove, vectors_txt)
+            os.remove(vectors_glove)
+        print('Convert loading text...')
+        model = gensim.models.KeyedVectors.load_word2vec_format(vectors_txt, binary=False)
+        print('Convert writing binary...')
+        model.save_word2vec_format(vectors, binary=True)
+        os.remove(vectors_txt)
+
     print('Load Word2Vec embedding...')
     model = gensim.models.KeyedVectors.load_word2vec_format(vectors, binary=True)
-    print(f'vocabulary size = {len(model.vocab)}')
+    print(f'vocabulary size = {vocab_size(model)}')
+    print(f'embedding dim = {embedding_dim(model)}')
     return model
 
 
