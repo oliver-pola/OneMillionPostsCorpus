@@ -10,6 +10,7 @@ wget = "*"
 numpy = "*"
 tensorflow-gpu = "==2.0.1"
 gensim = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.7"

@@ -6,6 +6,7 @@
 
 import sys
 import numpy as np
+import matplotlib.pyplot as plt
 
 import corpus
 
@@ -30,7 +31,24 @@ def single_category(category):
     print(f'labels.shape = {labels.shape}')
 
     model = models.classifier()
-    model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=0.1)
+    history = model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=0.1)
+
+    # plot history, https://keras.io/visualization
+    plt.subplot(121)
+    plt.plot(history.history['accuracy'], label='train')
+    plt.plot(history.history['val_accuracy'], label='test')
+    plt.title('accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend()
+    plt.subplot(122)
+    plt.plot(history.history['loss'], label='train')
+    plt.plot(history.history['val_loss'], label='test')
+    plt.title('loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend()
+    plt.show()
 
 
 def all_categories():
