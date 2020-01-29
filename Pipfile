@@ -8,7 +8,7 @@ verify_ssl = true
 [packages]
 wget = "*"
 numpy = "*"
-tensorflow-gpu = "==2.0.0"
+tensorflow-gpu = "==2.0.1"
 gensim = "*"
 
 [requires]
