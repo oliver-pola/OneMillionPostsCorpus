@@ -22,10 +22,12 @@ def single_category(category):
 
     preprocessed = models.preprocess(posts)
     del posts
+    print(f'preprocessed.shape = {np.array(preprocessed).shape}')
 
     category_index = corpus.categories[category]
     labels = label_vectors[:,category_index]
     del label_vectors
+    print(f'labels.shape = {np.array(labels).shape}')
 
     model = models.classifier()
     model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=0.1)

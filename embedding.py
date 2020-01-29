@@ -75,9 +75,13 @@ def preprocess(list_of_words):
     return [w.lower() for w in list_of_words]
 
 
-def vectors(model, list_of_words):
+def vectors_from_words(model, list_of_words):
     filtered = filter(lambda w: w in model.vocab, preprocess(list_of_words))
     return [model[w] for w in filtered]
+
+
+def vectors_from_indices(model, list_of_indices):
+    return [model[model.index2word[i]] for i in list_of_indices]
 
 
 def indices(model, list_of_words):

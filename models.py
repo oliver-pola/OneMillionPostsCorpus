@@ -30,6 +30,8 @@ def preprocess(posts):
     padded = pad_sequences(embedded, maxlen=padded_length, padding='post')
     del embedded
     return padded
+    # vectors = [embedding.vectors_from_indices(embedding_model, sequence) for sequence in padded]
+    # return vectors
 
 
 def classifier():
@@ -48,6 +50,7 @@ def classifier():
     model.add(tf.keras.layers.Embedding(vocab_size + 1, embedding_dim, input_length=padded_length, trainable=False,
         embeddings_initializer=tf.keras.initializers.Constant(embedding_matrix)))
     del embedding_matrix
+    # model.add(tf.keras.Input(shape=(padded_length, embedding_dim)))
     model.add(tf.keras.layers.SpatialDropout1D(0.4))
     model.add(tf.keras.layers.LSTM(lstm_out, dropout=0.2, recurrent_dropout=0.2))
     model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
