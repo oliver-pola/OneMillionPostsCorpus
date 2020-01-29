@@ -45,18 +45,19 @@ def classifier():
     embedding_matrix = embedding.matrix(embedding_model)
     del embedding_model
 
-    model = tf.keras.Sequential()
-    # index 0 does not represent a word -> vocab_size + 1
-    model.add(tf.keras.layers.Embedding(vocab_size + 1, embedding_dim, input_length=padded_length, trainable=False,
-        embeddings_initializer=tf.keras.initializers.Constant(embedding_matrix)))
-    del embedding_matrix
-    # model.add(tf.keras.Input(shape=(padded_length, embedding_dim)))
-    model.add(tf.keras.layers.SpatialDropout1D(0.4))
-    model.add(tf.keras.layers.LSTM(lstm_out, dropout=0.2, recurrent_dropout=0.2))
-    model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
-    model.add(tf.keras.layers.Dense(2, activation=tf.keras.activations.softmax))
+    with tf.distribute.MirroredStrategy().scope():
+        model = tf.keras.Sequential()
+        # index 0 does not represent a word -> vocab_size + 1
+        model.add(tf.keras.layers.Embedding(vocab_size + 1, embedding_dim, input_length=padded_length, trainable=False,
+            embeddings_initializer=tf.keras.initializers.Constant(embedding_matrix)))
+        del embedding_matrix
+        # model.add(tf.keras.Input(shape=(padded_length, embedding_dim)))
+        model.add(tf.keras.layers.SpatialDropout1D(0.4))
+        model.add(tf.keras.layers.LSTM(lstm_out, dropout=0.2, recurrent_dropout=0.2))
+        model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
+        model.add(tf.keras.layers.Dense(2, activation=tf.keras.activations.softmax))
 
-    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     print(model.summary())
     return model
 
