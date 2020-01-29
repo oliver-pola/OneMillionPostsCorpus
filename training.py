@@ -20,14 +20,14 @@ def single_category(category):
     with corpus.get_conn() as conn:
         posts, label_vectors = corpus.get_training(conn)
 
-    preprocessed = models.preprocess(posts)
+    preprocessed = np.array(models.preprocess(posts))
     del posts
-    print(f'preprocessed.shape = {np.array(preprocessed).shape}')
+    print(f'preprocessed.shape = {preprocessed.shape}')
 
     category_index = corpus.categories[category]
-    labels = label_vectors[:,category_index]
+    labels = np.array(label_vectors[:,category_index])
     del label_vectors
-    print(f'labels.shape = {np.array(labels).shape}')
+    print(f'labels.shape = {labels.shape}')
 
     model = models.classifier()
     model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=0.1)
