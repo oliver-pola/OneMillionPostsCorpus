@@ -30,8 +30,20 @@ def single_category(category):
     del label_vectors
     print(f'labels.shape = {labels.shape}')
 
+    # shuffle data and labels with same permutation
+    # because model.fit() will take validation data from the end and shuffle afterwards
+    permutation = np.random.permutation(preprocessed.shape[0])
+    preprocessed = preprocessed[permutation]
+    labels = labels[permutation]
+
+    val_split = 0.1
+    val_count = int(np.round(preprocessed.shape[0] * val_split))
+    print(f'val_count = {val_count}')
+    print(f'train labels mean = {np.mean(labels[:val_count], axis=0)}')
+    print(f'val labels mean = {np.mean(labels[val_count:], axis=0)}')
+
     model = models.classifier()
-    history = model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=0.1)
+    history = model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=val_split)
 
     # plot history, https://keras.io/visualization
     plt.subplot(121)
