@@ -44,23 +44,7 @@ def single_category(category):
 
     model = models.classifier()
     history = model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=val_split)
-
-    # plot history, https://keras.io/visualization
-    plt.subplot(121)
-    plt.plot(history.history['accuracy'], label='train')
-    plt.plot(history.history['val_accuracy'], label='test')
-    plt.title('accuracy')
-    plt.ylabel('accuracy')
-    plt.xlabel('epoch')
-    plt.legend()
-    plt.subplot(122)
-    plt.plot(history.history['loss'], label='train')
-    plt.plot(history.history['val_loss'], label='test')
-    plt.title('loss')
-    plt.ylabel('loss')
-    plt.xlabel('epoch')
-    plt.legend()
-    plt.show()
+    plot_hist(history)
 
 
 def all_categories():
@@ -77,6 +61,26 @@ def all_categories():
 
     model = models.multi()
     # model.fit(preprocessed, label_vectors, epochs=epochs, verbose=2, validation_split=0.1)
+
+
+def plot_hist(history):
+    # plot history, https://keras.io/visualization
+    plt.figure(figsize=(10,5))
+    plt.subplot(121)
+    plt.plot(history.history['accuracy'], label='training')
+    plt.plot(history.history['val_accuracy'], label='validation')
+    plt.title('accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend()
+    plt.subplot(122)
+    plt.plot(history.history['loss'], label='training')
+    plt.plot(history.history['val_loss'], label='validation')
+    plt.title('loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend()
+    plt.show()
 
 
 def run():
