@@ -55,9 +55,9 @@ def classifier():
         model.add(tf.keras.layers.SpatialDropout1D(0.4))
         model.add(tf.keras.layers.LSTM(lstm_out, dropout=0.2, recurrent_dropout=0.2))
         model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
-        model.add(tf.keras.layers.Dense(2, activation=tf.keras.activations.softmax))
+        model.add(tf.keras.layers.Dense(1, activation=tf.keras.activations.sigmoid))
 
-        model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     print(model.summary())
     return model
 
