@@ -39,8 +39,8 @@ def single_category(category):
     val_split = 0.1
     val_count = int(np.round(preprocessed.shape[0] * val_split))
     print(f'val_count = {val_count}')
-    print(f'train labels mean = {np.mean(labels[:val_count], axis=0)}')
-    print(f'val labels mean = {np.mean(labels[val_count:], axis=0)}')
+    print(f'train labels mean = {np.mean(labels[:-val_count], axis=0)}')
+    print(f'val labels mean = {np.mean(labels[-val_count:], axis=0)}')
 
     model = models.classifier()
     history = model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=val_split)
