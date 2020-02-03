@@ -133,3 +133,4 @@ dmypy.json
 *.tar.bz2
 *.tmp
 data/
+output/
