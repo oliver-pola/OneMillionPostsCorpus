@@ -69,7 +69,8 @@ def all_categories():
 
 def plot_hist(history, category):
     # plot history, https://keras.io/visualization
-    plt.figure(category, figsize=(10,5))
+    plt.figure('training', figsize=(10,5))
+    plt.suptitle(category)
     plt.subplot(121)
     plt.plot(history.history['accuracy'], label='training')
     plt.plot(history.history['val_accuracy'], label='validation')
