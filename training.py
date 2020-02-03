@@ -12,12 +12,10 @@ import matplotlib.pyplot as plt
 import corpus
 
 
-def single_category(category):
+def single_category(category, epochs=100):
     """ Trains a model for given single category
     """
     import models
-
-    epochs = 50
 
     with corpus.get_conn() as conn:
         posts, label_vectors = corpus.get_training(conn)
@@ -49,12 +47,10 @@ def single_category(category):
     plot_hist(history, category)
 
 
-def all_categories():
+def all_categories(epochs=100):
     """ Trains a model for all categories at once
     """
     import models
-
-    epochs = 50
 
     with corpus.get_conn() as conn:
         posts, label_vectors = corpus.get_training(conn)
@@ -113,21 +109,28 @@ def init(category):
 
 
 def run():
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2 or len(sys.argv) > 3:
         usage()
-    elif sys.argv[1] == 'All':
-        init(sys.argv[1])
-        all_categories()
-    elif sys.argv[1] not in list(corpus.categories):
+    elif len(sys.argv) == 3 and not sys.argv[2].isdigit():
+        usage()
+    elif sys.argv[1] not in ['All'] + list(corpus.categories):
         usage()
     else:
-        init(sys.argv[1])
-        single_category(sys.argv[1])
+        category = sys.argv[1]
+        init(category)
+        if len(sys.argv) == 3:
+            epochs = int(sys.argv[2])
+        else:
+            epochs = 100
+        if category == 'All':
+            all_categories(epochs)
+        else:
+            single_category(category, epochs)
 
 
 def usage():
     categories = ' | '.join(list(corpus.categories))
-    print(f'Usage: python {sys.argv[0]} < All | Category >')
+    print(f'Usage: python {sys.argv[0]} < All | Category > [ Epochs = 100 ]')
     print(f'Category: {categories}')
 
 
