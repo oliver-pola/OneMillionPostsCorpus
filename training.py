@@ -44,6 +44,7 @@ def single_category(category, epochs=100):
     model = models.classifier()
     history = model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=val_split)
     model.save(f'output/{category}/model.h5')
+    # print(history.history)
     plot_hist(history, category)
 
 
@@ -63,24 +64,26 @@ def all_categories(epochs=100):
     # plot_hist(history, 'All')
 
 
+def arrange_cols_rows(num, aspect=1):
+    cols = int(np.floor(np.sqrt(aspect * num)))
+    rows = (num + cols - 1) // cols
+    return cols, rows
+
+
 def plot_hist(history, category):
     # plot history, https://keras.io/visualization
-    plt.figure('training', figsize=(10,5))
+    metrics = ['loss', 'accuracy', 'precision', 'recall']
+    cols, rows = arrange_cols_rows(len(metrics))
+    plt.figure('training', figsize=(10, 10 * cols / rows))
     plt.suptitle(category)
-    plt.subplot(121)
-    plt.plot(history.history['accuracy'], label='training')
-    plt.plot(history.history['val_accuracy'], label='validation')
-    plt.title('accuracy')
-    plt.ylabel('accuracy')
-    plt.xlabel('epoch')
-    plt.legend()
-    plt.subplot(122)
-    plt.plot(history.history['loss'], label='training')
-    plt.plot(history.history['val_loss'], label='validation')
-    plt.title('loss')
-    plt.ylabel('loss')
-    plt.xlabel('epoch')
-    plt.legend()
+    for i, metric in enumerate(metrics):
+        plt.subplot(cols, rows, i + 1)
+        plt.plot(history.history[metric], label='training')
+        plt.plot(history.history['val_' + metric], label='validation')
+        plt.title(metric)
+        plt.ylabel(metric)
+        plt.xlabel('epoch')
+        plt.legend()
     plt.savefig(f'output/{category}/training.png')
     plt.show()
 

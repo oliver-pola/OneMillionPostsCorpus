@@ -58,7 +58,7 @@ def classifier():
         model.add(tf.keras.layers.Dropout(0.1))
         model.add(tf.keras.layers.Dense(1, activation=tf.keras.activations.sigmoid))
 
-        model.compile(optimizer='adam', learning_rate=0.01, loss='binary_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer='adam', learning_rate=0.01, loss='binary_crossentropy', metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()])
     print(model.summary())
     return model
 
