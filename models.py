@@ -52,12 +52,13 @@ def classifier():
         #     embeddings_initializer=tf.keras.initializers.Constant(embedding_matrix)))
         # del embedding_matrix
         model.add(tf.keras.Input(shape=(padded_length, embedding_dim)))
-        model.add(tf.keras.layers.SpatialDropout1D(0.4))
-        model.add(tf.keras.layers.LSTM(lstm_out, dropout=0.2, recurrent_dropout=0.2))
-        model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
+        model.add(tf.keras.layers.SpatialDropout1D(0.5))
+        model.add(tf.keras.layers.LSTM(lstm_out, dropout=0.4, recurrent_dropout=0.4))
+        model.add(tf.keras.layers.Dense(32, activation=tf.nn.relu))
+        model.add(tf.keras.layers.Dropout(0.1))
         model.add(tf.keras.layers.Dense(1, activation=tf.keras.activations.sigmoid))
 
-        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer='adam', learning_rate=0.01, loss='binary_crossentropy', metrics=['accuracy'])
     print(model.summary())
     return model
 
