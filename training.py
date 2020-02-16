@@ -16,6 +16,7 @@ def single_category(category, epochs=100):
     """ Trains a model for given single category
     """
     import models
+    import tensorflow as tf
 
     with corpus.get_conn() as conn:
         posts, label_vectors = corpus.get_training(conn)
@@ -45,6 +46,26 @@ def single_category(category, epochs=100):
     history = model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=val_split)
     model.save(f'output/{category}/model.h5')
     # print(history.history)
+
+    val_labels = labels[-val_count:]
+    val_predict = (model.predict(preprocessed[-val_count:]) > 0.5) * 1 # turn predictions into integers
+    val_predict = val_predict.reshape(val_labels.shape)
+    eq = val_labels == val_predict
+    neq = val_labels != val_predict
+    tp = np.sum(eq[val_predict == 1])
+    tn = np.sum(eq[val_predict == 0])
+    fp = np.sum(neq[val_predict == 1])
+    fn = np.sum(neq[val_predict == 0])
+    print('final validation results:')
+    print(f'true pos = {tp}')
+    print(f'true neg = {tn}')
+    print(f'false pos = {fp}')
+    print(f'false neg = {fn}')
+    print(f'confusion matrix = {tf.math.confusion_matrix(labels[-val_count:], val_predict).numpy().tolist()}')
+    # compute manually to check history values
+    print(f'precision = {tp / (tp + fp):.4f}')
+    print(f'recall = {tp / (tp + fn):.4f}')
+
     plot_hist(history, category)
 
 
