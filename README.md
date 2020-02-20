@@ -51,7 +51,7 @@ Categories count = 9
 The training can use a classifier for a single category or it can be done on all categories at once. Within the `pipenv shell` run:
 
 ```
-python training.py < All | Category > [ Epochs = 100 ]
+python training.py < All | Category > [ Epochs = 50 ]
 ```
 
 Where `Category` is one of these:

@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import corpus
 
 
-def single_category(category, epochs=100):
+def single_category(category, epochs=50):
     """ Trains a model for given single category
     """
     import models
@@ -69,7 +69,7 @@ def single_category(category, epochs=100):
     plot_hist(history, category)
 
 
-def all_categories(epochs=10):
+def all_categories(epochs=50):
     """ Trains a model for all categories at once
     """
     import models
@@ -214,7 +214,7 @@ def run():
 
 def usage():
     categories = ' | '.join(list(corpus.categories))
-    print(f'Usage: python {sys.argv[0]} < All | Category > [ Epochs = 100 ]')
+    print(f'Usage: python {sys.argv[0]} < All | Category > [ Epochs = 50 ]')
     print(f'Category: {categories}')
 
 
