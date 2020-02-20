@@ -101,28 +101,23 @@ def all_categories(epochs=50):
     class_occurances = np.count_nonzero(labels[:-val_count], axis=0)
     class_weights = class_occurances / np.sum(class_occurances)
     class_weights = dict(enumerate(class_weights))
-
-    print(class_weights)
-
-
-
+    print(f'class_weights = {class_weights}')
 
     model = models.multi()
 
     callbacks = [
         ReduceLROnPlateau(),
         EarlyStopping(patience=4),
-        ModelCheckpoint(filepath='all-categories.h5', save_best_only=True)
+        ModelCheckpoint(filepath='output/All/model.h5', save_best_only=True)
     ]
 
-    history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=1, validation_split=0.15, class_weight=class_weights, batch_size=64)
-    model.save('output/All/model.h5')
-    # plot_hist(history, 'All')
+    history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=2, validation_split=0.15, class_weight=class_weights, batch_size=64)
+    # model.save('output/All/model.h5') not necessary when ModelCheckpoint callback used
 
     val_labels = labels[-val_count:]
-    print(val_labels.shape)
+    print(f'val_labels.shape = {val_labels.shape}')
     val_predict = (model.predict(preprocessed[-val_count:]) > 0.5) * 1 # turn predictions into integers
-    print(val_predict.shape)
+    print(f'val_predict.shape = {val_predict.shape}')
     val_predict = val_predict.reshape(val_labels.shape)
 
     eq = val_labels == val_predict
@@ -143,7 +138,8 @@ def all_categories(epochs=50):
     print(f'precision = {tp / (tp + fp):.4f}')
     print(f'recall = {tp / (tp + fn):.4f}')
 
-    plot_hist(history, 'All')
+    plot_hist(history, 'All', categorical=True)
+
 
 def arrange_cols_rows(num, aspect=1):
     cols = int(np.floor(np.sqrt(aspect * num)))
@@ -151,9 +147,12 @@ def arrange_cols_rows(num, aspect=1):
     return cols, rows
 
 
-def plot_hist(history, category):
+def plot_hist(history, category, categorical=False):
     # plot history, https://keras.io/visualization
-    metrics = ['loss', 'categorical_accuracy', 'precision', 'recall']
+    if categorical:
+        metrics = ['loss', 'categorical_accuracy', 'precision', 'recall']
+    else:
+        metrics = ['loss', 'accuracy', 'precision', 'recall']
     cols, rows = arrange_cols_rows(len(metrics))
     plt.figure('training', figsize=(10, 10 * cols / rows))
     plt.suptitle(category)
