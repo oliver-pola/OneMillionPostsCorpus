@@ -66,9 +66,31 @@ def classifier():
 def multi():
     """ Classify all catgegories at once
     """
-    import tensorflow as tf # this shows some cuda message
+    import tensorflow as tf  # this shows some cuda message
 
-    return None
+    lstm_out = 128
+
+    global embedding_model
+    # embedding_matrix = embedding.matrix(embedding_model)
+    del embedding_model
+
+    with tf.distribute.MirroredStrategy().scope():
+        model = tf.keras.Sequential()
+        # index 0 does not represent a word -> vocab_size + 1
+        # model.add(tf.keras.layers.Embedding(vocab_size + 1, embedding_dim, input_length=padded_length, trainable=False,
+        #     embeddings_initializer=tf.keras.initializers.Constant(embedding_matrix)))
+        # del embedding_matrix
+        model.add(tf.keras.Input(shape=(padded_length, embedding_dim)))
+        model.add(tf.keras.layers.Dropout(0.2))
+        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(lstm_out, dropout=0.4, recurrent_dropout=0.4)))
+        model.add(tf.keras.layers.Dense(32, activation=tf.nn.relu))
+        model.add(tf.keras.layers.Dense(9, activation=tf.keras.activations.sigmoid))
+
+        model.compile(optimizer='adam', learning_rate=0.02, loss='binary_crossentropy',
+                      metrics=['categorical_accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()])
+
+    print(model.summary())
+    return model
 
 
 if __name__ == '__main__':

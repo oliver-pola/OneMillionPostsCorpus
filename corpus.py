@@ -143,6 +143,7 @@ def get_categorylist(conn, id_post):
     cur.execute(sql, param)
     for row in cur.fetchall():
         categories[row[0] - 1] = row[1]
+
     return categories
 
 

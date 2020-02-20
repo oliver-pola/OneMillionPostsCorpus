@@ -69,21 +69,81 @@ def single_category(category, epochs=100):
     plot_hist(history, category)
 
 
-def all_categories(epochs=100):
+def all_categories(epochs=10):
     """ Trains a model for all categories at once
     """
     import models
+    import tensorflow as tf
+    from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 
     with corpus.get_conn() as conn:
         posts, label_vectors = corpus.get_training(conn)
 
-    preprocessed = models.preprocess(posts)
+    preprocessed = np.array(models.preprocess(posts))
+    del posts
+    print(f'preprocessed.shape = {preprocessed.shape}')
+
+    #category_index = corpus.categories[category]
+    labels = np.array(label_vectors)
+    del label_vectors
+    print(f'labels.shape = {labels.shape}')
+
+    permutation = np.random.permutation(preprocessed.shape[0])
+    preprocessed = preprocessed[permutation]
+    labels = labels[permutation]
+
+    val_split = 0.1
+    val_count = int(np.round(preprocessed.shape[0] * val_split))
+    print(f'val_count = {val_count}')
+    print(f'train labels mean = {np.mean(labels[:-val_count], axis=0)}')
+    print(f'val labels mean = {np.mean(labels[-val_count:], axis=0)}')
+
+    class_occurances = np.count_nonzero(labels[:-val_count], axis=0)
+    class_weights = class_occurances / np.sum(class_occurances)
+    class_weights = dict(enumerate(class_weights))
+
+    print(class_weights)
+
+
+
 
     model = models.multi()
-    # model.fit(preprocessed, label_vectors, epochs=epochs, verbose=2, validation_split=0.1)
-    # model.save('output/All/model.h5')
+
+    callbacks = [
+        ReduceLROnPlateau(),
+        EarlyStopping(patience=4),
+        ModelCheckpoint(filepath='all-categories.h5', save_best_only=True)
+    ]
+
+    history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=1, validation_split=0.15, class_weight=class_weights, batch_size=64)
+    model.save('output/All/model.h5')
     # plot_hist(history, 'All')
 
+    val_labels = labels[-val_count:]
+    print(val_labels.shape)
+    val_predict = (model.predict(preprocessed[-val_count:]) > 0.5) * 1 # turn predictions into integers
+    print(val_predict.shape)
+    val_predict = val_predict.reshape(val_labels.shape)
+
+    eq = val_labels == val_predict
+    neq = val_labels != val_predict
+
+    tp = np.sum(eq[val_predict == 1], axis=0)
+    tn = np.sum(eq[val_predict == 0], axis=0)
+    fp = np.sum(neq[val_predict == 1], axis=0)
+    fn = np.sum(neq[val_predict == 0], axis=0)
+
+    print('final validation results:')
+    print(f'true pos = {tp}')
+    print(f'true neg = {tn}')
+    print(f'false pos = {fp}')
+    print(f'false neg = {fn}')
+    #print(f'confusion matrix = {tf.math.confusion_matrix(labels[-val_count:], val_predict).numpy().tolist()}')
+    # compute manually to check history values
+    print(f'precision = {tp / (tp + fp):.4f}')
+    print(f'recall = {tp / (tp + fn):.4f}')
+
+    plot_hist(history, 'All')
 
 def arrange_cols_rows(num, aspect=1):
     cols = int(np.floor(np.sqrt(aspect * num)))
@@ -93,7 +153,7 @@ def arrange_cols_rows(num, aspect=1):
 
 def plot_hist(history, category):
     # plot history, https://keras.io/visualization
-    metrics = ['loss', 'accuracy', 'precision', 'recall']
+    metrics = ['loss', 'categorical_accuracy', 'precision', 'recall']
     cols, rows = arrange_cols_rows(len(metrics))
     plt.figure('training', figsize=(10, 10 * cols / rows))
     plt.suptitle(category)
@@ -145,7 +205,7 @@ def run():
         if len(sys.argv) == 3:
             epochs = int(sys.argv[2])
         else:
-            epochs = 100
+            epochs = 50
         if category == 'All':
             all_categories(epochs)
         else:
