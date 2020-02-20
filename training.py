@@ -36,7 +36,7 @@ def single_category(category, epochs=50):
     preprocessed = preprocessed[permutation]
     labels = labels[permutation]
 
-    val_split = 0.1
+    val_split = 0.15
     val_count = int(np.round(preprocessed.shape[0] * val_split))
     print(f'val_count = {val_count}')
     print(f'train labels mean = {np.mean(labels[:-val_count], axis=0)}')
@@ -91,7 +91,7 @@ def all_categories(epochs=50):
     preprocessed = preprocessed[permutation]
     labels = labels[permutation]
 
-    val_split = 0.1
+    val_split = 0.15
     val_count = int(np.round(preprocessed.shape[0] * val_split))
     print(f'val_count = {val_count}')
     print(f'train labels mean = {np.mean(labels[:-val_count], axis=0)}')
@@ -110,7 +110,7 @@ def all_categories(epochs=50):
         ModelCheckpoint(filepath='output/All/model.h5', save_best_only=True)
     ]
 
-    history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=2, validation_split=0.15, class_weight=class_weights, batch_size=64)
+    history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=2, validation_split=val_split, class_weight=class_weights, batch_size=64)
     # model.save('output/All/model.h5') not necessary when ModelCheckpoint callback used
 
     val_labels = labels[-val_count:]
