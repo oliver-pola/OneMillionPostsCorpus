@@ -1,0 +1,158 @@
+\documentclass[compress,aspectratio=169]{beamer} %aspectratio=169
+
+\usetheme{Hamburg}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{lmodern}
+
+\usepackage[english]{babel}
+%\usepackage[ngerman]{babel}
+
+\usepackage{eurosym}
+\usepackage{listings}
+\usepackage{lstautogobble}
+\usepackage{microtype}
+\usepackage{textcomp}
+\usepackage{units}
+\usepackage{color}
+\usepackage{ulem}
+\usepackage{tabularx}
+\usepackage{tikz,pgfplots}
+\usetikzlibrary{positioning,shapes}
+
+\renewcommand\tabularxcolumn[1]{m{#1}}% for vertical centering text in X column
+
+\definecolor{old-code}{gray}{0.60}
+
+\lstset{
+	basicstyle=\ttfamily\footnotesize,
+	frame=single,
+	numbers=left,
+	language=Python,
+	breaklines=true,
+	breakatwhitespace=true,
+	postbreak=\hbox{$\hookrightarrow$ },
+	showstringspaces=false,
+	autogobble=true,
+	upquote=true,
+	tabsize=4,
+	captionpos=b,
+	morekeywords={int8_t,uint8_t,int16_t,uint16_t,int32_t,uint32_t,int64_t,uint64_t,size_t,ssize_t,off_t,intptr_t,uintptr_t,mode_t}
+}
+
+\title{One Million Posts Corpus}
+\subtitle{Seminar Deep Learning for Language and Speech}
+\author{Jens Becker, Julius Plehn, Oliver Pola}
+\institute{Language Technology Group\\Fachbereich Informatik\\Fakultät für Mathematik, Informatik und Naturwissenschaften\\Universität Hamburg}
+\date{25.02.2020}
+
+\titlegraphic{\raggedright\includegraphics[trim={0mm 0mm 1.8cm 0mm},clip,height=1.2cm]{img/logo}}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Agenda}
+
+	\tableofcontents[hidesubsections]
+\end{frame}
+
+
+\section{Introduction}
+
+\begin{frame}[fragile]
+	\frametitle{Introduction}
+	\begin{itemize}
+		\item ...
+	\end{itemize}
+	\hfill\tiny\cite{Schabus17, Schabus18}
+\end{frame}
+
+
+\section{NLP}
+
+\begin{frame}[fragile]
+	\frametitle{Word2Vec}
+	\begin{itemize}
+		\item ...
+	\end{itemize}
+	\hfill\tiny%\cite{?}
+\end{frame}
+
+
+\section{Corpus}
+
+\begin{frame}[fragile]
+	\frametitle{Corpus}
+	\begin{itemize}
+		\item ...
+	\end{itemize}
+	\hfill\tiny\cite{Schabus17, Schabus18}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Categories}
+	\begin{itemize}
+		\item SentimentNegative
+		\item SentimentNeutral
+		\item SentimentPositive
+		\item OffTopic
+		\item Inappropriate
+		\item Discriminating
+		\item PossiblyFeedback
+		\item PersonalStories
+		\item ArgumentsUsed
+	\end{itemize}
+	\hfill\tiny\cite{Schabus17, Schabus18}
+\end{frame}
+
+
+\section{DeepLearning}
+
+\begin{frame}[fragile]
+	\frametitle{Model}
+	\begin{itemize}
+		\item ...
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Training}
+	\begin{itemize}
+		\item ...
+	\end{itemize}
+\end{frame}
+
+\section{Results}
+
+\begin{frame}[fragile]
+	\frametitle{Single-Category}
+	\begin{itemize}
+		\item ...
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Multi-Category}
+	\begin{itemize}
+		\item ...
+	\end{itemize}
+\end{frame}
+
+
+\section*{References}
+
+\begin{frame}[t]%,allowframebreaks]
+	\frametitle{References}
+
+	\tiny%\fontsize{5}{6}\selectfont
+	\bibliographystyle{acl_natbib}
+	\bibliography{references}
+\end{frame}
+
+\end{document}
