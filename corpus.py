@@ -168,3 +168,9 @@ if __name__ == '__main__':
     print(f'x[0] = {x[0]}')
     print(f'y[0] = {y[0]}')
     print(f'Training count = {x.shape[0]}')
+    print()
+    print('Test: Categories apply...')
+    for c in categories:
+        i = categories[c]
+        a = np.sum(y[:,i] == 1)
+        print(f'{c}: applies = {a} ({100 * a / y.shape[0]:.2f} %)')

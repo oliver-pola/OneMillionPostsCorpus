@@ -90,25 +90,37 @@
 \begin{frame}[fragile]
 	\frametitle{Corpus}
 	\begin{itemize}
-		\item ...
+		\item One Million Posts Corpus
+		\item User posts from website of Austrian daily newspaper DER STANDARD
+		\item Taken over 12 months 2015-2016 
+		\item 1,000,000 unlabeled posts
+		\item 11,773 labeled posts
+		\item Available at \url{https://ofai.github.io/million-post-corpus/}
 	\end{itemize}
 	\hfill\tiny\cite{Schabus17, Schabus18}
 \end{frame}
 
 \begin{frame}[fragile]
 	\frametitle{Categories}
+	\centering
+	\begin{tabular}{l r r r r r}
+		& Labeled & \multicolumn{2}{c}{Does apply} & \multicolumn{2}{c}{We apply} \\
+		\hline
+		Sentiment Negative & 3599 & 1691 & 47\% \\
+		Sentiment Neutral & 3599 & 1865 & 52\% \\
+		Sentiment Positive & 3599 & 43 & 1\% \\
+		Off Topic & 3599 & 580 & 16\% \\
+		Inappropriate & 3599 & 303 & 8\%\\
+		Discriminating & 3599 & 282 & 8\%\\
+		Possibly Feedback & 6038 & 1301 & 22\% & 72 & 2\%\\
+		Personal Stories & 9336 & 1625 & 17\% & 47 & 1\%\\
+		Arguments Used & 3599 & 1022 & 28\%\\
+	\end{tabular}\\
+	{\hfill\tiny\cite{Schabus17}}
+	\vspace{5mm}
 	\begin{itemize}
-		\item SentimentNegative
-		\item SentimentNeutral
-		\item SentimentPositive
-		\item OffTopic
-		\item Inappropriate
-		\item Discriminating
-		\item PossiblyFeedback
-		\item PersonalStories
-		\item ArgumentsUsed
+		\item We use only posts, that are annotated as 0 or 1 for each category
 	\end{itemize}
-	\hfill\tiny\cite{Schabus17, Schabus18}
 \end{frame}
 
 
@@ -151,7 +163,7 @@
 	\frametitle{References}
 
 	\tiny%\fontsize{5}{6}\selectfont
-	\bibliographystyle{acl_natbib}
+	\bibliographystyle{apalike}
 	\bibliography{references}
 \end{frame}
 
