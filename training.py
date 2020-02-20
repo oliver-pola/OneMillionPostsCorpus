@@ -83,7 +83,6 @@ def all_categories(epochs=50):
     del posts
     print(f'preprocessed.shape = {preprocessed.shape}')
 
-    #category_index = corpus.categories[category]
     labels = np.array(label_vectors)
     del label_vectors
     print(f'labels.shape = {labels.shape}')
@@ -120,23 +119,27 @@ def all_categories(epochs=50):
     print(f'val_predict.shape = {val_predict.shape}')
     val_predict = val_predict.reshape(val_labels.shape)
 
-    eq = val_labels == val_predict
-    neq = val_labels != val_predict
+    print('final validation results per category:')
+    for category in corpus.categories:
+        category_index = corpus.categories[category]
 
-    tp = np.sum(eq[val_predict == 1], axis=0)
-    tn = np.sum(eq[val_predict == 0], axis=0)
-    fp = np.sum(neq[val_predict == 1], axis=0)
-    fn = np.sum(neq[val_predict == 0], axis=0)
+        cat_labels = val_labels[:,category_index]
+        cat_predict = val_predict[:,category_index]
+        eq = cat_labels == cat_predict
+        neq = cat_labels != cat_predict
 
-    print('final validation results:')
-    print(f'true pos = {tp}')
-    print(f'true neg = {tn}')
-    print(f'false pos = {fp}')
-    print(f'false neg = {fn}')
-    #print(f'confusion matrix = {tf.math.confusion_matrix(labels[-val_count:], val_predict).numpy().tolist()}')
-    # compute manually to check history values
-    print(f'precision = {tp / (tp + fp):.4f}')
-    print(f'recall = {tp / (tp + fn):.4f}')
+        tp = np.sum(eq[cat_predict == 1], axis=0)
+        tn = np.sum(eq[cat_predict == 0], axis=0)
+        fp = np.sum(neq[cat_predict == 1], axis=0)
+        fn = np.sum(neq[cat_predict == 0], axis=0)
+
+        print(category)
+        print(f'  true pos = {tp}')
+        print(f'  true neg = {tn}')
+        print(f'  false pos = {fp}')
+        print(f'  false neg = {fn}')
+        print(f'  precision = {tp / (tp + fp):.4f}')
+        print(f'  recall = {tp / (tp + fn):.4f}')
 
     plot_hist(history, 'All', categorical=True)
 
