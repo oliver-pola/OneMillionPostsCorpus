@@ -68,20 +68,9 @@
 \begin{frame}[fragile]
 	\frametitle{Introduction}
 	\begin{itemize}
-		\item ...
+		\item ... % we could just skip that, or maybe someone has sth to say?
 	\end{itemize}
 	\hfill\tiny\cite{Schabus17, Schabus18}
-\end{frame}
-
-
-\section{NLP}
-
-\begin{frame}[fragile]
-	\frametitle{Word2Vec}
-	\begin{itemize}
-		\item ...
-	\end{itemize}
-	\hfill\tiny%\cite{?}
 \end{frame}
 
 
@@ -120,6 +109,44 @@
 	\vspace{5mm}
 	\begin{itemize}
 		\item We use only posts, that are annotated as 0 or 1 for each category
+	\end{itemize}
+\end{frame}
+
+
+\section{Embedding}
+
+\begin{frame}[fragile]
+	\frametitle{Word2Vec Embedding}
+	\begin{itemize}
+		\item Using Word2Vec embedding~\cite{word2vec}
+		\item Applied by Gensim~\cite{gensim}
+		\item Loading pretrained german model~\cite{depset.ai}
+		\item Vocabulary size = 1,309,281
+		\item Embedding dim = 300
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Embedding Method 1}
+	\begin{itemize}
+		\item Preprocess posts into lists of word indices
+		\item Feed embedding matrix into training model
+		\item Repeatedly feed lists of word indices into training model
+		\item High memory usage in model training (GPU)
+		\item Not applicable to some of our systems
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Embedding Method 2}
+	\begin{itemize}
+		\item Preprocess posts into vectors, Gemsim can just do that
+		\item No embedding matrix needed, with all the words we never see
+		\item Repeatedly feed vectors into training model
+		\item Lower memory usage in model training (GPU)
+		\item Possible to throw away embedding model after preprocessing
+		\item Even lower memory usage in general (CPU)
+		\item Applicable to more systems
 	\end{itemize}
 \end{frame}
 
