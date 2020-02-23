@@ -60,10 +60,16 @@ def single_category(category, epochs=50):
     val_predict = val_predict.reshape(val_labels.shape)
     eq = val_labels == val_predict
     neq = val_labels != val_predict
+
     tp = np.sum(eq[val_predict == 1])
     tn = np.sum(eq[val_predict == 0])
     fp = np.sum(neq[val_predict == 1])
     fn = np.sum(neq[val_predict == 0])
+    accuracy = (tp + tn) / val_labels.shape[0]
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
+    f1 = 2.0 * precision * recall / (precision + recall)
+
     print('final validation results:')
     print(f'true pos = {tp}')
     print(f'true neg = {tn}')
@@ -71,8 +77,10 @@ def single_category(category, epochs=50):
     print(f'false neg = {fn}')
     print(f'confusion matrix = {tf.math.confusion_matrix(labels[-val_count:], val_predict).numpy().tolist()}')
     # compute manually to check history values
-    print(f'precision = {tp / (tp + fp):.4f}')
-    print(f'recall = {tp / (tp + fn):.4f}')
+    print(f'accuracy = {accuracy:.4f}')
+    print(f'precision = {precision:.4f}')
+    print(f'recall = {recall:.4f}')
+    print(f'F_1 = {f1:.4f}')
 
     plot_hist(history, category)
 
@@ -140,14 +148,20 @@ def all_categories(epochs=50):
         tn = np.sum(eq[cat_predict == 0], axis=0)
         fp = np.sum(neq[cat_predict == 1], axis=0)
         fn = np.sum(neq[cat_predict == 0], axis=0)
+        accuracy = (tp + tn) / val_labels.shape[0]
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        f1 = 2.0 * precision * recall / (precision + recall)
 
         print(category)
         print(f'  true pos = {tp}')
         print(f'  true neg = {tn}')
         print(f'  false pos = {fp}')
         print(f'  false neg = {fn}')
-        print(f'  precision = {tp / (tp + fp):.4f}')
-        print(f'  recall = {tp / (tp + fn):.4f}')
+        print(f'  accuracy = {accuracy:.4f}')
+        print(f'  precision = {precision:.4f}')
+        print(f'  recall = {recall:.4f}')
+        print(f'  F_1 = {f1:.4f}')
 
     plot_hist(history, 'All', categorical=True)
 
