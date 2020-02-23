@@ -53,7 +53,7 @@ def classifier():
         # del embedding_matrix
         model.add(tf.keras.Input(shape=(padded_length, embedding_dim)))
         model.add(tf.keras.layers.SpatialDropout1D(0.5))
-        model.add(tf.keras.layers.LSTM(lstm_out, dropout=0.4, recurrent_dropout=0.4))
+        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(lstm_out, dropout=0.4, recurrent_dropout=0.4)))
         model.add(tf.keras.layers.Dense(32, activation=tf.nn.relu))
         model.add(tf.keras.layers.Dropout(0.1))
         model.add(tf.keras.layers.Dense(1, activation=tf.keras.activations.sigmoid))
