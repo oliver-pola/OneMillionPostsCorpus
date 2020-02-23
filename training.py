@@ -17,6 +17,7 @@ def single_category(category, epochs=50):
     """
     import models
     import tensorflow as tf
+    from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 
     with corpus.get_conn() as conn:
         posts, label_vectors = corpus.get_training(conn)
@@ -43,8 +44,15 @@ def single_category(category, epochs=50):
     print(f'val labels mean = {np.mean(labels[-val_count:], axis=0)}')
 
     model = models.classifier()
-    history = model.fit(preprocessed, labels, epochs=epochs, verbose=2, validation_split=val_split)
-    model.save(f'output/{category}/model.h5')
+
+    callbacks = [
+        ReduceLROnPlateau(),
+        EarlyStopping(patience=4),
+        ModelCheckpoint(filepath=f'output/{category}/model.h5', save_best_only=True)
+    ]
+
+    history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=2, validation_split=val_split, batch_size=64)
+    # model.save(f'output/{category}/model.h5') not necessary when ModelCheckpoint callback used
     # print(history.history)
 
     val_labels = labels[-val_count:]
