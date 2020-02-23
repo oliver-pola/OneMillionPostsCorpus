@@ -118,5 +118,5 @@ if __name__ == '__main__':
     print(f'words = {words}')
     indi = indices(model, words)
     print(f'indices = {indi}')
-    embedded = np.array(vectors(model, words))
+    embedded = np.array(vectors_from_words(model, words))
     print(f'embedded.shape = {embedded.shape}')
