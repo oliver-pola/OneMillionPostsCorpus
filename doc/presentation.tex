@@ -116,27 +116,28 @@
 \end{frame}
 
 \begin{frame}[fragile]
-	\frametitle{Embedding Method 1}
-	\begin{itemize}
-		\item Preprocess posts into lists of word indices
-		\item Feed embedding matrix into training model
-		\item Repeatedly feed lists of word indices into training model
-		\item High memory usage in model training (GPU)
-		\item Not applicable to some of our systems
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-	\frametitle{Embedding Method 2}
-	\begin{itemize}
-		\item Preprocess posts into vectors, Gemsim can just do that
-		\item No embedding matrix needed, with all the words we never see
-		\item Repeatedly feed vectors into training model
-		\item Lower memory usage in model training (GPU)
-		\item Possible to throw away embedding model after preprocessing
-		\item Even lower memory usage in general (CPU)
-		\item Applicable to more systems
-	\end{itemize}
+	\frametitle{Embedding Method}
+	\centering\small
+	\begin{tabular}{l l l}
+		& Method 1 & Method 2 \\
+		\hline
+		Preprocessing & posts to lists of word indices & posts to vectors \\
+		\hline
+		Embedding matrix & feed matrix to training model & not needed, discard all \\
+		& & unseen words \\
+		\hline
+		Training & repeat feeding lists of word indices & repeat feeding vectors \\
+		\hline
+		Memory usage (GPU) & high & lower \\
+		\hline
+		Delete embedding model & no & yes \\
+		after preprocessing \\
+		\hline
+		Memory usage (CPU) & high & lower \\
+		\hline
+		Applicable to low-end & no & yes \\
+		systems \\
+	\end{tabular}\\
 \end{frame}
 
 
