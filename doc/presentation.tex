@@ -170,6 +170,41 @@
 \section{Results}
 
 \begin{frame}[fragile]
+	\frametitle{Results Single-/Multi-Model}
+	\centering\scriptsize
+	\begin{tabular}{l r r r r r r r r}
+		& True Pos & True Neg & False Pos & False Neg & Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		Sentiment Negative & 145 & 159 & 99 & 137 & 0.56 & 0.59 & 0.51 & 0.55 \\
+		& 112 & 236 & 59 & 133 & 0.64 & 0.65 & 0.46 & 0.54 \\
+		\hline
+		Sentiment Neutral & 190 & 133 & 149 & 68 & 0.60 & 0.56 & 0.74 & 0.64 \\
+		& 216 & 124 & 126 & 74 & 0.63 & 0.63 & 0.75 & 0.68 \\
+		\hline
+		Sentiment Positive & 0 & 533 & 0 & 7 & 0.99 & 0 & 0 & 0 \\
+		& 0 & 535 & 0 & 5 & 0.99 & 0 & 0 & 0 \\
+		\hline
+		Off Topic & 0 & 452 & 0 & 88 & 0.84 & 0 & 0 & 0 \\
+		& 11 & 423 & 14 & 92 & 0.80 & 0.44 & 0.11 & 0.17 \\
+		\hline
+		Inappropriate & 0 & 504 & 0 & 36 & 0.93 & 0 & 0 & 0 \\
+		& 1 & 483 & 0 & 56 & 0.90 & 1.00 & 0.02 & 0.03 \\
+		\hline
+		Discriminating & 0 & 497 & 0 & 43 & 0.92 & 0 & 0 & 0 \\
+		& 1 & 492 & 3 & 44 & 0.91 & 0.25 & 0.02 & 0.04 \\
+		\hline
+		Possibly Feedback & 0 & 531 & 0 & 9 & 0.98 & 0 & 0 & 0 \\
+		& 0 & 527 & 0 & 13 & 0.98 & 0 & 0 & 0 \\
+		\hline
+		Personal Stories & 0 & 532 & 0 & 8 & 0.99 & 0 & 0 & 0 \\
+		& 0 & 534 & 0 & 6 & 0.99 & 0 & 0 & 0 \\
+		\hline
+		Arguments Used & 78 & 350 & 51 & 61 & 0.79 & 0.60 & 0.56 & 0.58\\
+		& 99 & 339 & 41 & 61 & 0.81 & 0.71 & 0.62 & 0.66 \\
+	\end{tabular}\\
+\end{frame}
+
+\begin{frame}[fragile]
 	\frametitle{Comparison: Sentiment Negative}
 	\centering
 	\begin{tabular}{l r r r r r}
@@ -177,6 +212,7 @@
 		\hline
 		\cite{Schabus17} (best) & & 0.5842 & 0.7197 & 0.6137 \\
 		\cite{Schabus17} (LSTM) & & 0.5349 & 0.7197 & 0.6137 \\
+		\hline
 		Our Single-Model & 0.5630 & 0.5943 & 0.5142 & 0.5513\\
 		Our Multi-Model & 0.6444 & 0.6550 & 0.4571 & 0.5384 \\
 	\end{tabular}\\
@@ -190,6 +226,7 @@
 		\hline
 		\cite{Schabus17} (best) & & 0.2353 & 0.4651 & 0.1333 \\
 		\cite{Schabus17} (LSTM) & & 0 & 0 & 0\\
+		\hline
 		Our Single-Model & 0.9870 & 0 & 0 & 0 \\
 		Our Multi-Model & 0.9907 & 0 & 0 & 0 \\
 	\end{tabular}\\
