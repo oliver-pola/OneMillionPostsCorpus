@@ -170,16 +170,32 @@
 \section{Results}
 
 \begin{frame}[fragile]
-	\frametitle{Single-Category}
-	\begin{itemize}
-		\item ...
-	\end{itemize}
+	\frametitle{Comparison: Sentiment Negative}
+	\centering
+	\begin{tabular}{l r r r r r}
+		& Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		\cite{Schabus17} (best) & & 0.5842 & 0.7197 & 0.6137 \\
+		\cite{Schabus17} (LSTM) & & 0.5349 & 0.7197 & 0.6137 \\
+		Our Single-Model & 0.5630 & 0.5943 & 0.5142 & 0.5513\\
+		Our Multi-Model & 0.6444 & 0.6550 & 0.4571 & 0.5384 \\
+	\end{tabular}\\
 \end{frame}
 
 \begin{frame}[fragile]
-	\frametitle{Multi-Category}
+	\frametitle{Comparison: Sentiment Positive}
+	\centering
+	\begin{tabular}{l r r r r r}
+		& Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		\cite{Schabus17} (best) & & 0.2353 & 0.4651 & 0.1333 \\
+		\cite{Schabus17} (LSTM) & & 0 & 0 & 0\\
+		Our Single-Model & 0.9870 & 0 & 0 & 0 \\
+		Our Multi-Model & 0.9907 & 0 & 0 & 0 \\
+	\end{tabular}\\
+	\vspace{5mm}
 	\begin{itemize}
-		\item ...
+		\item Model learns to predict always 0 (true pos = 0, false pos = 0)
 	\end{itemize}
 \end{frame}
 
