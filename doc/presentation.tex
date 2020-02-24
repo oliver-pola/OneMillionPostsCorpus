@@ -152,8 +152,17 @@
 
 \begin{frame}[fragile]
 	\frametitle{Training}
+	\hspace*{-1cm}
+	\includegraphics[trim={1.6cm 12.4cm 2cm 0.5cm},clip,width=7.8cm]{img/training_SentimentNegative_100}%
+	\includegraphics[trim={1.4cm 12.4cm 2cm 0.5cm},clip,width=7.8cm]{img/training_All_22}
+	\small
+	\vspace{-5mm}
 	\begin{itemize}
-		\item ...
+		\item Left two: Single-Model for Sentiment Negative before implementing Early Stopping
+		\begin{itemize}
+			\item Although validation loss increases early, accuracy (precision, recall) still improve
+		\end{itemize}
+		\item Right two: Multi-Model with Early Stopping
 	\end{itemize}
 \end{frame}
 
