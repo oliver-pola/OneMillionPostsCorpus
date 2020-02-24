@@ -6,9 +6,10 @@
 
 import sys
 import os
+from datetime import datetime
+
 import numpy as np
 import matplotlib.pyplot as plt
-
 import corpus
 
 
@@ -17,7 +18,7 @@ def single_category(category, epochs=50):
     """
     import models
     import tensorflow as tf
-    from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
+    from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint, TensorBoard
 
     with corpus.get_conn() as conn:
         posts, label_vectors = corpus.get_training(conn)
@@ -48,7 +49,8 @@ def single_category(category, epochs=50):
     callbacks = [
         ReduceLROnPlateau(),
         EarlyStopping(patience=4),
-        ModelCheckpoint(filepath=f'output/{category}/model.h5', save_best_only=True)
+        ModelCheckpoint(filepath=f'output/{category}/model.h5', save_best_only=True),
+        TensorBoard(log_dir='logs/fit/' + datetime.now().strftime('%Y%m%d-%H%M%S'))
     ]
 
     history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=2, validation_split=val_split, batch_size=64)
@@ -90,7 +92,7 @@ def all_categories(epochs=50):
     """
     import models
     import tensorflow as tf
-    from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
+    from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint, TensorBoard
 
     with corpus.get_conn() as conn:
         posts, label_vectors = corpus.get_training(conn)
@@ -102,7 +104,6 @@ def all_categories(epochs=50):
     labels = np.array(label_vectors)
     del label_vectors
     print(f'labels.shape = {labels.shape}')
-
     permutation = np.random.permutation(preprocessed.shape[0])
     preprocessed = preprocessed[permutation]
     labels = labels[permutation]
@@ -123,7 +124,8 @@ def all_categories(epochs=50):
     callbacks = [
         ReduceLROnPlateau(),
         EarlyStopping(patience=4),
-        ModelCheckpoint(filepath='output/All/model.h5', save_best_only=True)
+        ModelCheckpoint(filepath='output/All/model.h5', save_best_only=True),
+        TensorBoard(log_dir='logs/fit/' + datetime.now().strftime('%Y%m%d-%H%M%S'))
     ]
 
     history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=2, validation_split=val_split, class_weight=class_weights, batch_size=64)
