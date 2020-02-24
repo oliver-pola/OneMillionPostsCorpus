@@ -236,6 +236,25 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+	\frametitle{Comparison: Arguments Used}
+	\centering
+	\begin{tabular}{l r r r r r}
+		& Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		\cite{Schabus17} (best) & & 0.6105 & 0.6614 & 0.6098 \\
+		\cite{Schabus17} (LSTM) & & 0.5685 & 0.6458 & 0.6047\\
+		\hline
+		Our Single-Model & 0.7926 & 0.6047 & 0.5612 & 0.5821 \\
+		Our Multi-Model & 0.8111 & 0.7071 & 0.6188 & 0.6600 \\
+	\end{tabular}\\
+	\vspace{5mm}
+	\begin{itemize}
+		\item Our Multi-Model is an improvement to the original paper
+		\item Good result although category only applies 28\%
+	\end{itemize}
+\end{frame}
+
 
 \section*{References}
 
