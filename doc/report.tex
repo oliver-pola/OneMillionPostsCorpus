@@ -15,8 +15,9 @@
 \usepackage[hyperref]{naaclhlt2019}
 \usepackage{times}
 \usepackage{latexsym}
-
+\usepackage{todonotes}
 \usepackage{url}
+\usepackage{units}
 
 \aclfinalcopy % Uncomment this line for the final submission
 %\def\aclpaperid{***} %  Enter the acl Paper ID here
@@ -43,17 +44,53 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-  ...
+The purpose of this term paper is to summarize the development effort put into the creation of a multi-model neural network for category classification. This contains used preprocessing steps of the initial corpus, integration of an embedding layer and the actual deep learning network. Finally, an evaluation is given as well as ideas for future work. \todo{we conclude that...}
+
+ 
 \end{abstract}
-
-\section{Credits}
-
-?
 
 \section{Introduction}
 
 ...~\cite{Schabus17, Schabus18}
 
+
+\section{Corpus}
+The corpus used stems from the Austrian newspaper \textit{DER STANDARD} which contains posts that are labelled according to nine distinct categories and is available at \url{https://ofai.github.io/million-post-corpus/}. The posts have been written during a time period from 2015-2016 and contain 1 million unlabelled posts as well as 11.773 hand-labelled posts.
+
+
+\subsection{Categories}
+In Table~\ref{tab:categories} an overview of included categories is shown. For most categories 3599 labelled posts are available. This first column means that for example of those 11.773 hand-labelled posts 3599 posts where analysed for the \textit{Off Topic} category. The second column shows that in this case 580 posts where indeed \textit{Off Topic}, resulting in 16\% of the labelled posts of this specific category. As we want to build a model that is capable of identifying multiple categories we use only posts that are annotated as 0 or 1 for each category. This can result in unbalanced datasets where for example the \textit{Personal Stories} category is only annotated positively in 1\% of the posts. 
+\begin{table*}[t!]
+	\centering
+	\begin{tabular}{l r r r r r}
+		& Labeled & \multicolumn{2}{c}{Does apply} & \multicolumn{2}{c}{We apply} \\
+		\hline
+		Sentiment Negative & 3599 & 1691 & 47\% \\
+		Sentiment Neutral & 3599 & 1865 & 52\% \\
+		Sentiment Positive & 3599 & 43 & 1\% \\
+		Off Topic & 3599 & 580 & 16\% \\
+		Inappropriate & 3599 & 303 & 8\%\\
+		Discriminating & 3599 & 282 & 8\%\\
+		Possibly Feedback & 6038 & 1301 & 22\% & 72 & 2\%\\
+		Personal Stories & 9336 & 1625 & 17\% & 47 & 1\%\\
+		Arguments Used & 3599 & 1022 & 28\%\\
+	\end{tabular}
+	\caption{Categories of posts and their distribution according to \cite{Schabus17}}
+	\label{tab:categories}
+\end{table*}
+
+
+%\begin{description}
+%	\item[SentimentNegative] ...
+%	\item[SentimentNeutral] ...
+%	\item[SentimentPositive] ...
+%	\item[OffTopic] ...
+%	\item[Inappropriate] ...
+%	\item[Discriminating] ...
+%	\item[PossiblyFeedback] ...
+%	\item[PersonalStories] ...
+%	\item[ArgumentsUsed] ...
+%\end{description}
 
 \section{NLP}
 
@@ -65,35 +102,18 @@
 ...%\cite{?}
 
 
-\section{Corpus}
-
-...
-
-
-\subsection{Categories}
-
-...
-
-\begin{description}
-	\item[SentimentNegative] ...
-	\item[SentimentNeutral] ...
-	\item[SentimentPositive] ...
-	\item[OffTopic] ...
-	\item[Inappropriate] ...
-	\item[Discriminating] ...
-	\item[PossiblyFeedback] ...
-	\item[PersonalStories] ...
-	\item[ArgumentsUsed] ...
-\end{description}
-
 \section{DeepLearning}
 
 ...
 
 
 \subsection{Model}
-
-...
+\begin{figure}
+	\centering
+	\includegraphics[trim={0cm 19.5cm 0cm 3cm},clip,page=2, width=0.8\textwidth]{img/model}
+	\caption{Applied deep learning network}
+	\label{fig:model}
+\end{figure}
 
 
 \subsection{Training}
@@ -115,9 +135,18 @@
 
 ...
 
+\section{Future Work}
+
 
 \bibliography{references}
 \bibliographystyle{acl_natbib}
+\appendix
+
+\section{Appendices}
+\label{sec:appendix}
+
+
+
 
 
 \end{document}
