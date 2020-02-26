@@ -12,6 +12,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import corpus
 
+lstm_out_list = [32, 64, 96]
+dense_units_list = [16, 32, 48, 64, 80, 96]
+repeats = 3
 
 def all_categories(epochs=50):
     """ Trains a model for all categories at once
@@ -50,12 +53,17 @@ def all_categories(epochs=50):
         EarlyStopping(patience=4)
     ]
 
-    for lstm_out in [32, 64, 96]:
-        for dense_units in [16, 32, 48, 64, 80, 96]:
-            for repeat_to_calc_means in range(1):
+    csv_file = f'output/All/training_meta.csv'
+    if not os.path.exists(csv_file):
+        with open(csv_file, 'w') as csv:
+            csv.write('lstm_out, dense_units, F_1\n')
+
+    for lstm_out in lstm_out_list:
+        for dense_units in dense_units_list:
+            for repeat_to_calc_means in range(repeats):
                 model = models.multi(lstm_out=lstm_out, dense_units=dense_units, free_embedding_memory=False)
 
-                history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=2, validation_split=val_split, class_weight=class_weights, batch_size=64)
+                history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=2, validation_split=val_split, class_weight=class_weights, batch_size=16)
 
                 val_labels = labels[-val_count:]
                 print(f'val_labels.shape = {val_labels.shape}')
@@ -91,8 +99,33 @@ def all_categories(epochs=50):
                 print(f'  recall = {recall:.4f}')
                 print(f'  F_1 = {f1:.4f}')
 
-                #TODO write meta-params and results to some CSV file
+                with open(csv_file, 'a') as csv:
+                    csv.write(f'{lstm_out}, {dense_units}, {f1:.4f}\n')
                 tf.keras.backend.clear_session()
+
+
+def graph():
+    csv_file = f'output/All/training_meta.csv'
+    if not os.path.exists(csv_file):
+        print('No data to build graph')
+        return
+    data = np.loadtxt(csv_file, delimiter=',', skiprows=1)
+    plt.figure('training meta', figsize=(6, 4))
+    plt.title('Evaluation for category = ''ArgumentsUsed''')
+    for lstm_out in lstm_out_list:
+        graph_x = []
+        graph_y = []
+        lstm_data = data[data[:,0] == lstm_out]
+        for dense_units in dense_units_list:
+            dense_data = lstm_data[lstm_data[:,1] == dense_units]
+            graph_x.append(dense_units)
+            graph_y.append(np.mean(dense_data[:,2]))
+        plt.plot(graph_x, graph_y, label=f'{lstm_out} LSTM units')
+    plt.xlabel('dense units')
+    plt.ylabel('$F_1$')
+    plt.legend()
+    plt.savefig(f'output/All/training_meta.png')
+    plt.show()
 
 
 class Logger(object):
@@ -123,6 +156,8 @@ def run():
         usage()
     elif len(sys.argv) == 3 and not sys.argv[2].isdigit():
         usage()
+    elif sys.argv[1] == 'Graph':
+        graph()
     elif sys.argv[1] not in ['All'] + list(corpus.categories):
         usage()
     else:
