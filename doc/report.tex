@@ -156,11 +156,29 @@ Table~\ref{tab:results:sentiment_positive} is an example of the consequences of 
 			\hline
 			Our Single-Model & 0.9870 & 0 & 0 & 0 \\
 			Our Multi-Model & 0.9907 & 0 & 0 & 0 \\
-		\end{tabular}\\  
+		\end{tabular}
 	\end{center}
 	\caption{Comparison: Sentiment Positive}
 	\label{tab:results:sentiment_positive}
 \end{table*}
+
+Table~\ref{tab:results:arguments_used} shows the performance on the category \textit{Arguments Used}. In this case our multi-model LSTM outperforms the original model, as can be seen by comparing the $F_1$ score. This is especially noteworthy as this category is only applied positively in 28\% of the cases.  
+\begin{table*}[t!]
+	\begin{center}	
+			\begin{tabular}{l r r r r r}
+			& Accuracy & Precision & Recall & $F_1$ \\
+			\hline
+			\cite{Schabus17} (best) & & 0.6105 & 0.6614 & 0.6098 \\
+			\cite{Schabus17} (LSTM) & & 0.5685 & 0.6458 & 0.6047\\
+			\hline
+			Our Single-Model & 0.7926 & 0.6047 & 0.5612 & 0.5821 \\
+			Our Multi-Model & 0.8111 & 0.7071 & 0.6188 & 0.6600 \\
+		\end{tabular}
+	\end{center}
+	\caption{Comparison: Arguments Used}
+	\label{tab:results:arguments_used}
+\end{table*}
+
 
 \subsection{Single-Category}
 
