@@ -149,6 +149,42 @@ Our hyper parameters are justified by a search over a range of values, shown in 
 In this paragraph the performance of the models evaluated by \newcite{Schabus17} and us are compared.
 While in Table~\ref{tab:results} all measurements of the single-model as well as the multi-model of every category is shown, a few categories are highlighted.
 
+\begin{table*}
+	\centering\small
+	\begin{tabular}{l r r r r r r r r}
+		& True Pos & True Neg & False Pos & False Neg & Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		Sentiment Negative & 145 & 159 & 99 & 137 & 0.56 & 0.59 & 0.51 & 0.55 \\
+		& 112 & 236 & 59 & 133 & 0.64 & 0.65 & 0.46 & 0.54 \\
+		\hline
+		Sentiment Neutral & 190 & 133 & 149 & 68 & 0.60 & 0.56 & 0.74 & 0.64 \\
+		& 216 & 124 & 126 & 74 & 0.63 & 0.63 & 0.75 & 0.68 \\
+		\hline
+		Sentiment Positive & 0 & 533 & 0 & 7 & 0.99 & 0 & 0 & 0 \\
+		& 0 & 535 & 0 & 5 & 0.99 & 0 & 0 & 0 \\
+		\hline
+		Off Topic & 0 & 452 & 0 & 88 & 0.84 & 0 & 0 & 0 \\
+		& 11 & 423 & 14 & 92 & 0.80 & 0.44 & 0.11 & 0.17 \\
+		\hline
+		Inappropriate & 0 & 504 & 0 & 36 & 0.93 & 0 & 0 & 0 \\
+		& 1 & 483 & 0 & 56 & 0.90 & 1.00 & 0.02 & 0.03 \\
+		\hline
+		Discriminating & 0 & 497 & 0 & 43 & 0.92 & 0 & 0 & 0 \\
+		& 1 & 492 & 3 & 44 & 0.91 & 0.25 & 0.02 & 0.04 \\
+		\hline
+		Possibly Feedback & 0 & 531 & 0 & 9 & 0.98 & 0 & 0 & 0 \\
+		& 0 & 527 & 0 & 13 & 0.98 & 0 & 0 & 0 \\
+		\hline
+		Personal Stories & 0 & 532 & 0 & 8 & 0.99 & 0 & 0 & 0 \\
+		& 0 & 534 & 0 & 6 & 0.99 & 0 & 0 & 0 \\
+		\hline
+		Arguments Used & 78 & 350 & 51 & 61 & 0.79 & 0.60 & 0.56 & 0.58\\
+		& 99 & 339 & 41 & 61 & 0.81 & 0.71 & 0.62 & 0.66 \\
+	\end{tabular}
+	\caption{Comparison of the performance of the single- (top row in each category) vs the multi-model (bottom row)}
+	\label{tab:results}
+\end{table*}
+
 In Table~\ref{tab:results:sentiment_negative} the performance of our model classifying the category \textit{Sentiment Negative} is shown. As the corpus for this category is nearly equally balanced this is a good starting point for a comparison. While the precision of our single- as well as the multi-model is higher, the recall is much lower that the one described in the original paper. This therefore results in a lower $F_1$ score.
 \begin{table}[h!]
 	\centering\tiny
@@ -206,45 +242,8 @@ Table~\ref{tab:results:arguments_used} shows the performance on the category \te
 \bibliographystyle{acl_natbib}
 \appendix
 
-\section{Appendices}
-\label{sec:appendix}
-
-\begin{table*}[t!]
-	\centering\small
-	\begin{tabular}{l r r r r r r r r}
-		& True Pos & True Neg & False Pos & False Neg & Accuracy & Precision & Recall & $F_1$ \\
-		\hline
-		Sentiment Negative & 145 & 159 & 99 & 137 & 0.56 & 0.59 & 0.51 & 0.55 \\
-		& 112 & 236 & 59 & 133 & 0.64 & 0.65 & 0.46 & 0.54 \\
-		\hline
-		Sentiment Neutral & 190 & 133 & 149 & 68 & 0.60 & 0.56 & 0.74 & 0.64 \\
-		& 216 & 124 & 126 & 74 & 0.63 & 0.63 & 0.75 & 0.68 \\
-		\hline
-		Sentiment Positive & 0 & 533 & 0 & 7 & 0.99 & 0 & 0 & 0 \\
-		& 0 & 535 & 0 & 5 & 0.99 & 0 & 0 & 0 \\
-		\hline
-		Off Topic & 0 & 452 & 0 & 88 & 0.84 & 0 & 0 & 0 \\
-		& 11 & 423 & 14 & 92 & 0.80 & 0.44 & 0.11 & 0.17 \\
-		\hline
-		Inappropriate & 0 & 504 & 0 & 36 & 0.93 & 0 & 0 & 0 \\
-		& 1 & 483 & 0 & 56 & 0.90 & 1.00 & 0.02 & 0.03 \\
-		\hline
-		Discriminating & 0 & 497 & 0 & 43 & 0.92 & 0 & 0 & 0 \\
-		& 1 & 492 & 3 & 44 & 0.91 & 0.25 & 0.02 & 0.04 \\
-		\hline
-		Possibly Feedback & 0 & 531 & 0 & 9 & 0.98 & 0 & 0 & 0 \\
-		& 0 & 527 & 0 & 13 & 0.98 & 0 & 0 & 0 \\
-		\hline
-		Personal Stories & 0 & 532 & 0 & 8 & 0.99 & 0 & 0 & 0 \\
-		& 0 & 534 & 0 & 6 & 0.99 & 0 & 0 & 0 \\
-		\hline
-		Arguments Used & 78 & 350 & 51 & 61 & 0.79 & 0.60 & 0.56 & 0.58\\
-		& 99 & 339 & 41 & 61 & 0.81 & 0.71 & 0.62 & 0.66 \\
-	\end{tabular}
-	\caption{Comparison of the performance of the single- (top row in each category) vs the multi-model (bottom row)}
-	\label{tab:results}
-\end{table*}
-
+%\section{Appendices}
+%\label{sec:appendix}
 
 
 \end{document}
