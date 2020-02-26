@@ -55,11 +55,14 @@ The purpose of this term paper is to summarize the development effort put into t
 \todo{LSTM, multi-model, ...}
 
 \section{Corpus}
-The corpus\footnote{Corpus available at \url{https://ofai.github.io/million-post-corpus/}} used stems from the Austrian newspaper \textit{DER STANDARD} which contains posts that are labelled according to nine distinct categories. The posts have been written during a time period from 2015-2016 and contain 1 million unlabelled posts as well as 11.773 hand-labelled posts.
+The corpus\footnote{Corpus available at \url{https://ofai.github.io/million-post-corpus/}} used stems from the Austrian newspaper \textit{DER STANDARD} which contains posts that are labelled according to nine distinct categories. The posts have been written during a time period from 2015-2016 and contain 1 million unlabelled posts as well as 11,773 hand-labelled posts.
 
 
 \subsection{Categories}
-In Table~\ref{tab:categories} an overview of included categories is shown. For most categories 3599 labelled posts are available. This first column means that for example of those 11.773 hand-labelled posts 3599 posts where analysed for the \textit{Off Topic} category. The second column shows that in this case 580 posts where indeed \textit{Off Topic}, resulting in 16\% of the labelled posts of this specific category. As we want to build a model that is capable of identifying multiple categories we use only posts that are annotated as 0 or 1 for each category. This can result in unbalanced datasets where for example the \textit{Personal Stories} category is only annotated positively in 1\% of the posts. 
+In Table~\ref{tab:categories} an overview of included categories is shown. The meaning of those categories is explained in~\cite{Schabus17}. 
+In the first column is shown that for example 3599 posts were labbelled in the \textit{Off Topic} category. 
+The second column shows that in this case 580 posts where indeed \textit{Off Topic}, resulting in 16\% of the labelled posts of this specific category. 
+
 \begin{table}
 	\centering\small
 	\begin{tabular}{l r r r r r}
@@ -79,18 +82,18 @@ In Table~\ref{tab:categories} an overview of included categories is shown. For m
 	\label{tab:categories}
 \end{table}
 
+As previously mentioned there are 11,773 labelled posts. This means after labelling 3599 posts in each category, there were another 2439 posts labeled in the \textit{Possibly Feedback} and yet another 5737 posts in the \textit{Personal Stories} category only.
+These additional posts were strongly biased towards positive labels, so that the category finally applies to 22\% / 17\% of posts, whereas in a random sample like the 3599 posts it is rather 2\% / 1\%.
+Besides this questionable labelling method, the additional posts can't be used in our method for technical reasons.
+As we want to build a model that is capable of identifying multiple categories at once we use only posts that are annotated as 0 or 1 for each category.
+So only those 3599 posts can be used in our approach.  
 
-%\begin{description}
-%	\item[SentimentNegative] ...
-%	\item[SentimentNeutral] ...
-%	\item[SentimentPositive] ...
-%	\item[OffTopic] ...
-%	\item[Inappropriate] ...
-%	\item[Discriminating] ...
-%	\item[PossiblyFeedback] ...
-%	\item[PersonalStories] ...
-%	\item[ArgumentsUsed] ...
-%\end{description}
+Looking at the percentage where the categories do apply, it becomes already clear that most of them will be problematic. 
+Having only a few positive labels will encourage the model to predict always negative, as this will result in a 99\% accuracy when the positive labels are 1\% only, like in the \textit{Sentiment Positive} category. With that small set of training data it is also not applicable to omit some of the negative posts to train with an artificial balance around 50\% each.
+
+Also there is the \textit{Off Topic} category with probably enough positives, but technically we will consider single posts only, out of their context among other posts belonging to certain articles. But the latter would be necessary to detect something as off-topic.
+
+To summarize, we expect to produce useful results only in the \textit{Sentiment Negative}, \textit{Sentiment Neutral} and \textit{Arguments Used} categories only.
 
 \section{Embedding}
 
@@ -112,12 +115,34 @@ The model has been implemented using Tensorflow 2 and Keras. Because it tends to
 	\label{fig:model}
 \end{figure}
 
+This describes our final model, we call \textit{Multi-Model} where we use all the categories combined to a vector of size 9.
+To reproduce the original work, we first implemented a classifier that was considering a single category only. 
+This model we call \textit{Single-Model} and it is similar to Figure~\ref{fig:model} except having only one unit in the final classification layer.
+
 
 \subsection{Training}
 
 The training itself is supervised by using automatic learning rate adaptation (\textit{ReduceLROnPlateau}) and \textit{EarlyStopping}, which helps to reduce the overall training time.
+Figure~\ref{fig:training_loss} shows the progress during training and the early stopping method applied, as training ends when validation loss starts to increase.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[trim={1.4cm 12.4cm 2cm 2.5cm},clip,width=0.5\textwidth]{img/training_All_22}
+	\caption{Progress of loss function (left) and accuracy (right) during training}
+	\label{fig:training_loss}
+\end{figure}
+
+The \textit{categorical accuracy} is shown in Figure~\ref{fig:training_loss} as summary over all categories. In fact it is the sum of the accuracies in each category, weighted by the rate of positive labels. Later only accuracies for single categories, extracted from a vector of predictions, are analized.
+
+Our hyper parameters are justified by a search over a range of values, shown in Figure~\ref{fig:hyper_params}. Finally the best model measured by $F_1$ score is applied. A first impression was that out model performs well in the \textit{Arguments Used} category, so we concentrated to optimize that.
 
 ...\todo{Graph comparing different training parameters}
+\begin{figure}[h!]
+	\centering
+	TODO
+	\caption{Search for best model based on different hyper parameters}
+	\label{fig:hyper_params}
+\end{figure}
 
 
 \section{Results}
@@ -141,6 +166,7 @@ In Table~\ref{tab:results:sentiment_negative} the performance of our model class
 \end{table}
 
 Table~\ref{tab:results:sentiment_positive} is an example of the consequences of unbalanced data. While the accuracy is at around 99\% the precision, recall and $F_1$ score is zero. As the corpus only contains 1\% of positively labelled data for this category the model learns to predict always zero.
+But the LSTM model in the original work had the exact same problem, while other models lead to non-zero but still unsatisfying scores.
 \begin{table}[h!]
 	\centering\tiny
 	\begin{tabular}{l r r r r r}
