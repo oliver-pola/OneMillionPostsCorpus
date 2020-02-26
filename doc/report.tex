@@ -132,7 +132,7 @@ Figure~\ref{fig:training_loss} shows the progress during training and the early 
 	\label{fig:training_loss}
 \end{figure}
 
-The \textit{categorical accuracy} is shown in Figure~\ref{fig:training_loss} as summary over all categories. In fact it is the sum of the accuracies in each category, weighted by the rate of positive labels. Later only accuracies for single categories, extracted from a vector of predictions, are analized.
+The \textit{categorical accuracy} is shown in Figure~\ref{fig:training_loss} as summary over all categories. In fact it is the average of the accuracies in each category, weighted by the rate of positive labels. Later only accuracies for single categories, extracted from a vector of predictions, are analized.
 
 Our hyper parameters are justified by a search over a range of values, shown in Figure~\ref{fig:hyper_params}. Finally the best model measured by $F_1$ score is applied. A first impression was that out model performs well in the \textit{Arguments Used} category, so we concentrated to optimize that.
 
