@@ -51,8 +51,16 @@ The purpose of this term paper is to summarize the development effort put into t
 
 \section{Introduction}
 
-...~\cite{Schabus17, Schabus18}
-\todo{LSTM, multi-model, ...}
+Many work has been done on NLP tasks using English language.
+To contribute to the knowledge about German language, similar work has been repeated on large collections of german text.
+One work produced and analyzed the \textit{One Million Posts Corpus} described in the next chapter in more detail.~\cite{Schabus17, Schabus18}
+
+Our work will use that corpus and tries to reproduce some of the original work.
+The focus lies on applying the recurrent deep learning method LSTM~\cite{lstm}.
+
+The corpus contains labelled data for multiple categories.
+As the previous work did apply classifiers for each category on its own, we try to contribute another approach, using all categores at once.
+
 
 \section{Corpus}
 The corpus\footnote{Corpus available at \url{https://ofai.github.io/million-post-corpus/}} used stems from the Austrian newspaper \textit{DER STANDARD} which contains posts that are labelled according to nine distinct categories. The posts have been written during a time period from 2015-2016 and contain 1 million unlabelled posts as well as 11,773 hand-labelled posts.
@@ -236,6 +244,8 @@ Table~\ref{tab:results:arguments_used} shows the performance on the category \te
 
 
 \section{Conclusion}
+
+\todo{we conclude that...}
 
 
 \bibliography{references}
