@@ -52,7 +52,7 @@ The purpose of this term paper is to summarize the development effort put into t
 \section{Introduction}
 
 ...~\cite{Schabus17, Schabus18}
-
+\todo{LSTM, multi-model, ...}
 
 \section{Corpus}
 The corpus used stems from the Austrian newspaper \textit{DER STANDARD} which contains posts that are labelled according to nine distinct categories and is available at \url{https://ofai.github.io/million-post-corpus/}. The posts have been written during a time period from 2015-2016 and contain 1 million unlabelled posts as well as 11.773 hand-labelled posts.
@@ -108,6 +108,9 @@ In Table~\ref{tab:categories} an overview of included categories is shown. For m
 
 
 \subsection{Model}
+The model has been implemented using Tensorflow 2 and Keras. Because it tends to overfit several dropouts are applied. As can be seen in Figure~\ref{fig:model} the first layer uses a dropout rate of 20\%. The following LSTM layer uses 128 units while also applying a dropout rate of 40\%. The LSTM is wrapped by a bidirectional layer which improved the performance by using information of the past, as well of the future. Finally, two dense layers are used, where the last layer maps the output of the network to the nine categories shown earlier.
+
+The training itself is supervised by using automatic learning rate adaptation (\textit{ReduceLROnPlateau}) and \textit{EarlyStopping}, which helps to reduce the overall training time.
 \begin{figure}
 	\centering
 	\includegraphics[trim={0cm 19.5cm 0cm 3cm},clip,page=2, width=0.8\textwidth]{img/model}
@@ -118,13 +121,46 @@ In Table~\ref{tab:categories} an overview of included categories is shown. For m
 
 \subsection{Training}
 
-...
+...\todo{Graph comparing different training parameters}
 
 
 \section{Results}
+In this paragraph the performance of the models evaluated by \newcite{Schabus17} and us are compared.
+While in Table~\ref{tab:results} all measurements of the single-model as well as the multi-model of every category is shown, a few categories are highlighted.
 
-...
+In Table~\ref{tab:results:sentiment_negative} the performance of our model classifying the category \textit{Sentiment Negative} is shown. As the corpus for this category is nearly equally balanced this is a good starting point for a comparison. While the precision of our single- as well as the multi-model is higher, the recall is much lower that the one described in the original paper. This therefore results in a lower $F_1$ score.
+\begin{table*}[t!]
+	\begin{center}	
+	\begin{tabular}{l r r r r r}
+		& Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		\cite{Schabus17} (best) & & 0.5842 & 0.7197 & 0.6137 \\
+		\cite{Schabus17} (LSTM) & & 0.5349 & 0.7197 & 0.6137 \\
+		\hline
+		Our Single-Model & 0.5630 & 0.5943 & 0.5142 & 0.5513\\
+		Our Multi-Model & 0.6444 & 0.6550 & 0.4571 & 0.5384 \\
+	\end{tabular}  
+	\end{center}
+	\caption{Comparison: Sentiment Negative}
+	\label{tab:results:sentiment_negative}
+\end{table*}
 
+Table~\ref{tab:results:sentiment_positive} is an example of the consequences of unbalanced data. While the accuracy is at around 99\% the precision, recall and $F_1$ score is zero. As the corpus only contains 1\% of positively labelled data for this category the model learns to predict always zero.
+\begin{table*}[t!]
+	\begin{center}	
+		\begin{tabular}{l r r r r r}
+			& Accuracy & Precision & Recall & $F_1$ \\
+			\hline
+			\cite{Schabus17} (best) & & 0.2353 & 0.4651 & 0.1333 \\
+			\cite{Schabus17} (LSTM) & & 0 & 0 & 0\\
+			\hline
+			Our Single-Model & 0.9870 & 0 & 0 & 0 \\
+			Our Multi-Model & 0.9907 & 0 & 0 & 0 \\
+		\end{tabular}\\  
+	\end{center}
+	\caption{Comparison: Sentiment Positive}
+	\label{tab:results:sentiment_positive}
+\end{table*}
 
 \subsection{Single-Category}
 
@@ -135,7 +171,7 @@ In Table~\ref{tab:categories} an overview of included categories is shown. For m
 
 ...
 
-\section{Future Work}
+\section{Conclusion}
 
 
 \bibliography{references}
@@ -145,7 +181,41 @@ In Table~\ref{tab:categories} an overview of included categories is shown. For m
 \section{Appendices}
 \label{sec:appendix}
 
-
+\begin{table*}[t!]
+	\centering
+	\begin{tabular}{l r r r r r r r r}
+		& True Pos & True Neg & False Pos & False Neg & Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		Sentiment Negative & 145 & 159 & 99 & 137 & 0.56 & 0.59 & 0.51 & 0.55 \\
+		& 112 & 236 & 59 & 133 & 0.64 & 0.65 & 0.46 & 0.54 \\
+		\hline
+		Sentiment Neutral & 190 & 133 & 149 & 68 & 0.60 & 0.56 & 0.74 & 0.64 \\
+		& 216 & 124 & 126 & 74 & 0.63 & 0.63 & 0.75 & 0.68 \\
+		\hline
+		Sentiment Positive & 0 & 533 & 0 & 7 & 0.99 & 0 & 0 & 0 \\
+		& 0 & 535 & 0 & 5 & 0.99 & 0 & 0 & 0 \\
+		\hline
+		Off Topic & 0 & 452 & 0 & 88 & 0.84 & 0 & 0 & 0 \\
+		& 11 & 423 & 14 & 92 & 0.80 & 0.44 & 0.11 & 0.17 \\
+		\hline
+		Inappropriate & 0 & 504 & 0 & 36 & 0.93 & 0 & 0 & 0 \\
+		& 1 & 483 & 0 & 56 & 0.90 & 1.00 & 0.02 & 0.03 \\
+		\hline
+		Discriminating & 0 & 497 & 0 & 43 & 0.92 & 0 & 0 & 0 \\
+		& 1 & 492 & 3 & 44 & 0.91 & 0.25 & 0.02 & 0.04 \\
+		\hline
+		Possibly Feedback & 0 & 531 & 0 & 9 & 0.98 & 0 & 0 & 0 \\
+		& 0 & 527 & 0 & 13 & 0.98 & 0 & 0 & 0 \\
+		\hline
+		Personal Stories & 0 & 532 & 0 & 8 & 0.99 & 0 & 0 & 0 \\
+		& 0 & 534 & 0 & 6 & 0.99 & 0 & 0 & 0 \\
+		\hline
+		Arguments Used & 78 & 350 & 51 & 61 & 0.79 & 0.60 & 0.56 & 0.58\\
+		& 99 & 339 & 41 & 61 & 0.81 & 0.71 & 0.62 & 0.66 \\
+	\end{tabular}
+	\caption{Comparison of the performance of the single- vs the multi-model}
+	\label{tab:results}
+\end{table*}
 
 
 
