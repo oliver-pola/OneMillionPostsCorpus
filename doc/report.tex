@@ -67,7 +67,7 @@ The corpus\footnote{Corpus available at \url{https://ofai.github.io/million-post
 
 
 \subsection{Categories}
-In Table~\ref{tab:categories} an overview of included categories is shown. The meaning of those categories is explained in~\cite{Schabus17}. 
+In Table~\ref{tab:categories} an overview of included categories is shown. The meaning of those categories is explained by~\newcite{Schabus17}.
 In the first column is shown that for example 3599 posts were labbelled in the \textit{Off Topic} category. 
 The second column shows that in this case 580 posts where indeed \textit{Off Topic}, resulting in 16\% of the labelled posts of this specific category. 
 
@@ -182,12 +182,12 @@ While in Table~\ref{tab:results} all measurements of the single-model as well as
 
 In Table~\ref{tab:results:sentiment_negative} the performance of our model classifying the category \textit{Sentiment Negative} is shown. As the corpus for this category is nearly equally balanced this is a good starting point for a comparison. While the precision of our single- as well as the multi-model is higher, the recall is much lower that the one described in the original paper. This therefore results in a lower $F_1$ score.
 \begin{table}[h!]
-	\centering\tiny
+	\centering\scriptsize
 	\begin{tabular}{l r r r r r}
 		& Accuracy & Precision & Recall & $F_1$ \\
 		\hline
-		\cite{Schabus17} (best) & & 0.5842 & 0.7197 & 0.6137 \\
-		\cite{Schabus17} (LSTM) & & 0.5349 & 0.7197 & 0.6137 \\
+		Schabus et al. (best) & & 0.5842 & 0.7197 & 0.6137 \\
+		Schabus et al. (LSTM) & & 0.5349 & 0.7197 & 0.6137 \\
 		\hline
 		Our Single-Model & 0.5630 & 0.5943 & 0.5142 & 0.5513\\
 		Our Multi-Model & 0.6444 & 0.6550 & 0.4571 & 0.5384 \\
@@ -199,12 +199,12 @@ In Table~\ref{tab:results:sentiment_negative} the performance of our model class
 Table~\ref{tab:results:sentiment_positive} is an example of the consequences of unbalanced data. While the accuracy is at around 99\% the precision, recall and $F_1$ score is zero. As the corpus only contains 1\% of positively labelled data for this category the model learns to predict always zero.
 But the LSTM model in the original work had the exact same problem, while other models lead to non-zero but still unsatisfying scores.
 \begin{table}[h!]
-	\centering\tiny
+	\centering\scriptsize
 	\begin{tabular}{l r r r r r}
 		& Accuracy & Precision & Recall & $F_1$ \\
 		\hline
-		\cite{Schabus17} (best) & & 0.2353 & 0.4651 & 0.1333 \\
-		\cite{Schabus17} (LSTM) & & 0 & 0 & 0\\
+		Schabus et al. (best) & & 0.2353 & 0.4651 & 0.1333 \\
+		Schabus et al. (LSTM) & & 0 & 0 & 0\\
 		\hline
 		Our Single-Model & 0.9870 & 0 & 0 & 0 \\
 		Our Multi-Model & 0.9907 & 0 & 0 & 0 \\
@@ -215,12 +215,12 @@ But the LSTM model in the original work had the exact same problem, while other 
 
 Table~\ref{tab:results:arguments_used} shows the performance on the category \textit{Arguments Used}. In this case our multi-model LSTM outperforms the original model, as can be seen by comparing the $F_1$ score. This is especially noteworthy as this category is only applied positively in 28\% of the cases.  
 \begin{table}[h!]
-	\centering\tiny
+	\centering\scriptsize
 	\begin{tabular}{l r r r r r}
 		& Accuracy & Precision & Recall & $F_1$ \\
 		\hline
-		\cite{Schabus17} (best) & & 0.6105 & 0.6614 & 0.6098 \\
-		\cite{Schabus17} (LSTM) & & 0.5685 & 0.6458 & 0.6047\\
+		Schabus et al. (best) & & 0.6105 & 0.6614 & 0.6098 \\
+		Schabus et al. (LSTM) & & 0.5685 & 0.6458 & 0.6047\\
 		\hline
 		Our Single-Model & 0.7926 & 0.6047 & 0.5612 & 0.5821 \\
 		Our Multi-Model & 0.8111 & 0.7071 & 0.6188 & 0.6600 \\
