@@ -55,13 +55,13 @@ The purpose of this term paper is to summarize the development effort put into t
 \todo{LSTM, multi-model, ...}
 
 \section{Corpus}
-The corpus used stems from the Austrian newspaper \textit{DER STANDARD} which contains posts that are labelled according to nine distinct categories and is available at \url{https://ofai.github.io/million-post-corpus/}. The posts have been written during a time period from 2015-2016 and contain 1 million unlabelled posts as well as 11.773 hand-labelled posts.
+The corpus\footnote{Corpus available at \url{https://ofai.github.io/million-post-corpus/}} used stems from the Austrian newspaper \textit{DER STANDARD} which contains posts that are labelled according to nine distinct categories. The posts have been written during a time period from 2015-2016 and contain 1 million unlabelled posts as well as 11.773 hand-labelled posts.
 
 
 \subsection{Categories}
 In Table~\ref{tab:categories} an overview of included categories is shown. For most categories 3599 labelled posts are available. This first column means that for example of those 11.773 hand-labelled posts 3599 posts where analysed for the \textit{Off Topic} category. The second column shows that in this case 580 posts where indeed \textit{Off Topic}, resulting in 16\% of the labelled posts of this specific category. As we want to build a model that is capable of identifying multiple categories we use only posts that are annotated as 0 or 1 for each category. This can result in unbalanced datasets where for example the \textit{Personal Stories} category is only annotated positively in 1\% of the posts. 
-\begin{table*}[t!]
-	\centering
+\begin{table}
+	\centering\small
 	\begin{tabular}{l r r r r r}
 		& Labeled & \multicolumn{2}{c}{Does apply} & \multicolumn{2}{c}{We apply} \\
 		\hline
@@ -77,7 +77,7 @@ In Table~\ref{tab:categories} an overview of included categories is shown. For m
 	\end{tabular}
 	\caption{Categories of posts and their distribution according to \cite{Schabus17}}
 	\label{tab:categories}
-\end{table*}
+\end{table}
 
 
 %\begin{description}
@@ -110,16 +110,17 @@ In Table~\ref{tab:categories} an overview of included categories is shown. For m
 \subsection{Model}
 The model has been implemented using Tensorflow 2 and Keras. Because it tends to overfit several dropouts are applied. As can be seen in Figure~\ref{fig:model} the first layer uses a dropout rate of 20\%. The following LSTM layer uses 128 units while also applying a dropout rate of 40\%. The LSTM is wrapped by a bidirectional layer which improved the performance by using information of the past, as well of the future. Finally, two dense layers are used, where the last layer maps the output of the network to the nine categories shown earlier.
 
-The training itself is supervised by using automatic learning rate adaptation (\textit{ReduceLROnPlateau}) and \textit{EarlyStopping}, which helps to reduce the overall training time.
-\begin{figure}
+\begin{figure}[h!]
 	\centering
-	\includegraphics[trim={0cm 19.5cm 0cm 3cm},clip,page=2, width=0.8\textwidth]{img/model}
+	\includegraphics[trim={1cm 19.5cm 5cm 3cm},clip,page=2, width=0.5\textwidth]{img/model}
 	\caption{Applied deep learning network}
 	\label{fig:model}
 \end{figure}
 
 
 \subsection{Training}
+
+The training itself is supervised by using automatic learning rate adaptation (\textit{ReduceLROnPlateau}) and \textit{EarlyStopping}, which helps to reduce the overall training time.
 
 ...\todo{Graph comparing different training parameters}
 
@@ -129,8 +130,8 @@ In this paragraph the performance of the models evaluated by \newcite{Schabus17}
 While in Table~\ref{tab:results} all measurements of the single-model as well as the multi-model of every category is shown, a few categories are highlighted.
 
 In Table~\ref{tab:results:sentiment_negative} the performance of our model classifying the category \textit{Sentiment Negative} is shown. As the corpus for this category is nearly equally balanced this is a good starting point for a comparison. While the precision of our single- as well as the multi-model is higher, the recall is much lower that the one described in the original paper. This therefore results in a lower $F_1$ score.
-\begin{table*}[t!]
-	\begin{center}	
+\begin{table}[h!]
+	\centering\tiny
 	\begin{tabular}{l r r r r r}
 		& Accuracy & Precision & Recall & $F_1$ \\
 		\hline
@@ -140,44 +141,41 @@ In Table~\ref{tab:results:sentiment_negative} the performance of our model class
 		Our Single-Model & 0.5630 & 0.5943 & 0.5142 & 0.5513\\
 		Our Multi-Model & 0.6444 & 0.6550 & 0.4571 & 0.5384 \\
 	\end{tabular}  
-	\end{center}
 	\caption{Comparison: Sentiment Negative}
 	\label{tab:results:sentiment_negative}
-\end{table*}
+\end{table}
 
 Table~\ref{tab:results:sentiment_positive} is an example of the consequences of unbalanced data. While the accuracy is at around 99\% the precision, recall and $F_1$ score is zero. As the corpus only contains 1\% of positively labelled data for this category the model learns to predict always zero.
-\begin{table*}[t!]
-	\begin{center}	
-		\begin{tabular}{l r r r r r}
-			& Accuracy & Precision & Recall & $F_1$ \\
-			\hline
-			\cite{Schabus17} (best) & & 0.2353 & 0.4651 & 0.1333 \\
-			\cite{Schabus17} (LSTM) & & 0 & 0 & 0\\
-			\hline
-			Our Single-Model & 0.9870 & 0 & 0 & 0 \\
-			Our Multi-Model & 0.9907 & 0 & 0 & 0 \\
-		\end{tabular}
-	\end{center}
+\begin{table}[h!]
+	\centering\tiny
+	\begin{tabular}{l r r r r r}
+		& Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		\cite{Schabus17} (best) & & 0.2353 & 0.4651 & 0.1333 \\
+		\cite{Schabus17} (LSTM) & & 0 & 0 & 0\\
+		\hline
+		Our Single-Model & 0.9870 & 0 & 0 & 0 \\
+		Our Multi-Model & 0.9907 & 0 & 0 & 0 \\
+	\end{tabular}
 	\caption{Comparison: Sentiment Positive}
 	\label{tab:results:sentiment_positive}
-\end{table*}
+\end{table}
 
 Table~\ref{tab:results:arguments_used} shows the performance on the category \textit{Arguments Used}. In this case our multi-model LSTM outperforms the original model, as can be seen by comparing the $F_1$ score. This is especially noteworthy as this category is only applied positively in 28\% of the cases.  
-\begin{table*}[t!]
-	\begin{center}	
-			\begin{tabular}{l r r r r r}
-			& Accuracy & Precision & Recall & $F_1$ \\
-			\hline
-			\cite{Schabus17} (best) & & 0.6105 & 0.6614 & 0.6098 \\
-			\cite{Schabus17} (LSTM) & & 0.5685 & 0.6458 & 0.6047\\
-			\hline
-			Our Single-Model & 0.7926 & 0.6047 & 0.5612 & 0.5821 \\
-			Our Multi-Model & 0.8111 & 0.7071 & 0.6188 & 0.6600 \\
-		\end{tabular}
-	\end{center}
+\begin{table}[h!]
+	\centering\tiny
+	\begin{tabular}{l r r r r r}
+		& Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		\cite{Schabus17} (best) & & 0.6105 & 0.6614 & 0.6098 \\
+		\cite{Schabus17} (LSTM) & & 0.5685 & 0.6458 & 0.6047\\
+		\hline
+		Our Single-Model & 0.7926 & 0.6047 & 0.5612 & 0.5821 \\
+		Our Multi-Model & 0.8111 & 0.7071 & 0.6188 & 0.6600 \\
+	\end{tabular}
 	\caption{Comparison: Arguments Used}
 	\label{tab:results:arguments_used}
-\end{table*}
+\end{table}
 
 
 \subsection{Single-Category}
@@ -200,7 +198,7 @@ Table~\ref{tab:results:arguments_used} shows the performance on the category \te
 \label{sec:appendix}
 
 \begin{table*}[t!]
-	\centering
+	\centering\small
 	\begin{tabular}{l r r r r r r r r}
 		& True Pos & True Neg & False Pos & False Neg & Accuracy & Precision & Recall & $F_1$ \\
 		\hline
@@ -231,7 +229,7 @@ Table~\ref{tab:results:arguments_used} shows the performance on the category \te
 		Arguments Used & 78 & 350 & 51 & 61 & 0.79 & 0.60 & 0.56 & 0.58\\
 		& 99 & 339 & 41 & 61 & 0.81 & 0.71 & 0.62 & 0.66 \\
 	\end{tabular}
-	\caption{Comparison of the performance of the single- vs the multi-model}
+	\caption{Comparison of the performance of the single- (top row in each category) vs the multi-model (bottom row)}
 	\label{tab:results}
 \end{table*}
 
