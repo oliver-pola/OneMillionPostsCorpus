@@ -67,3 +67,8 @@ PossiblyFeedback
 PersonalStories
 ArgumentsUsed
 ```
+
+## Training
+Further information like a description of our work, the model and some results can be found in:
+- [Project presentation](doc/presentation.pdf)
+- [Project paper](doc/report.pdf)
