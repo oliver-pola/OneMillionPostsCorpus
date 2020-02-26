@@ -50,7 +50,7 @@ def single_category(category, epochs=50):
         ReduceLROnPlateau(),
         EarlyStopping(patience=4),
         ModelCheckpoint(filepath=f'output/{category}/model.h5', save_best_only=True),
-        TensorBoard(log_dir='logs/fit/' + datetime.now().strftime('%Y%m%d-%H%M%S'))
+        TensorBoard(log_dir=os.path.join('logs', 'fit', datetime.now().strftime('%Y%m%d-%H%M%S')))
     ]
 
     history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=2, validation_split=val_split, batch_size=64)
@@ -125,7 +125,7 @@ def all_categories(epochs=50):
         ReduceLROnPlateau(),
         EarlyStopping(patience=4),
         ModelCheckpoint(filepath='output/All/model.h5', save_best_only=True),
-        TensorBoard(log_dir='logs/fit/' + datetime.now().strftime('%Y%m%d-%H%M%S'))
+        TensorBoard(log_dir=os.path.join('logs', 'fit', datetime.now().strftime('%Y%m%d-%H%M%S')))
     ]
 
     history = model.fit(preprocessed, labels, callbacks=callbacks, epochs=epochs, verbose=2, validation_split=val_split, class_weight=class_weights, batch_size=64)
