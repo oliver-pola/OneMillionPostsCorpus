@@ -34,12 +34,10 @@ def preprocess(posts):
     return vectors
 
 
-def classifier():
+def classifier(lstm_out=128, dense_units=64):
     """ Classify a single catgegory
     """
     import tensorflow as tf # this shows some cuda message
-
-    lstm_out = 128
 
     global embedding_model
     # embedding_matrix = embedding.matrix(embedding_model)
@@ -54,7 +52,7 @@ def classifier():
         model.add(tf.keras.Input(shape=(padded_length, embedding_dim)))
         model.add(tf.keras.layers.SpatialDropout1D(0.5))
         model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(lstm_out, dropout=0.4, recurrent_dropout=0.4)))
-        model.add(tf.keras.layers.Dense(32, activation=tf.nn.relu))
+        model.add(tf.keras.layers.Dense(dense_units, activation=tf.nn.relu))
         model.add(tf.keras.layers.Dropout(0.1))
         model.add(tf.keras.layers.Dense(1, activation=tf.keras.activations.sigmoid))
 
@@ -63,7 +61,7 @@ def classifier():
     return model
 
 
-def multi(lstm_out=128, dense_units=32, free_embedding_memory=True):
+def multi(lstm_out=128, dense_units=64, free_embedding_memory=True):
     """ Classify all catgegories at once
     """
     import tensorflow as tf  # this shows some cuda message

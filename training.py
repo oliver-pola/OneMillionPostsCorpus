@@ -84,6 +84,18 @@ def single_category(category, epochs=50):
     print(f'recall = {recall:.4f}')
     print(f'F_1 = {f1:.4f}')
 
+    # LaTeX table content
+    with open(f'output/{category}/latex_full.txt', 'w') as f:
+        if tp > 0:
+            f.write(f'\t\t{category} & {tp} & {tn} & {fp} & {fn} & {accuracy:.2f} & {precision:.2f} & {recall:.2f} & {f1:.2f} \\\\\n')
+        else:
+            f.write(f'\t\t{category} & {tp} & {tn} & {fp} & {fn} & {accuracy:.2f} & 0 & 0 & 0 \\\\\n')
+    with open(f'output/{category}/latex_{category}.txt', 'w') as f:
+        if tp > 0:
+            f.write(f'\t\tOur Single-Model & {accuracy:.4f} & {precision:.4f} & {recall:.4f} & {f1:.4f} \\\\\n')
+        else:
+            f.write(f'\t\tOur Single-Model & {accuracy:.4f} & 0 & 0 & 0 \\\\\n')
+
     plot_hist(history, category)
 
 
@@ -164,6 +176,19 @@ def all_categories(epochs=50):
         print(f'  precision = {precision:.4f}')
         print(f'  recall = {recall:.4f}')
         print(f'  F_1 = {f1:.4f}')
+
+        # LaTeX table content
+        with open(f'output/All/latex_full.txt', 'a') as f:
+            f.write('\t\t\\hline\n')
+            if tp > 0:
+                f.write(f'\t\t{category} & {tp} & {tn} & {fp} & {fn} & {accuracy:.2f} & {precision:.2f} & {recall:.2f} & {f1:.2f} \\\\\n')
+            else:
+                f.write(f'\t\t{category} & {tp} & {tn} & {fp} & {fn} & {accuracy:.2f} & 0 & 0 & 0 \\\\\n')
+        with open(f'output/All/latex_{category}.txt', 'w') as f:
+            if tp > 0:
+                f.write(f'\t\tOur Multi-Model & {accuracy:.4f} & {precision:.4f} & {recall:.4f} & {f1:.4f} \\\\\n')
+            else:
+                f.write(f'\t\tOur Multi-Model & {accuracy:.4f} & 0 & 0 & 0 \\\\\n')
 
     plot_hist(history, 'All', categorical=True)
 

@@ -177,7 +177,7 @@ Figure~\ref{fig:training_loss} shows the progress during training and the early 
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[trim={1.4cm 12.4cm 2cm 2.5cm},clip,width=0.5\textwidth]{img/training_All_22}
+	\includegraphics[trim={1.4cm 12.4cm 2cm 2.5cm},clip,width=0.5\textwidth]{img/training_All_17}
 	\caption{Progress of loss function (left) and accuracy (right) during training}
 	\label{fig:training_loss}
 \end{figure}
@@ -198,8 +198,8 @@ In Table~\ref{tab:results:sentiment_negative} the performance of our model class
 		Schabus et al. (best) & & 0.5842 & 0.7197 & 0.6137 \\
 		Schabus et al. (LSTM) & & 0.5349 & 0.7197 & 0.6137 \\
 		\hline
-		Our Single-Model & 0.5630 & 0.5943 & 0.5142 & 0.5513\\
-		Our Multi-Model & 0.6444 & 0.6550 & 0.4571 & 0.5384 \\
+		Our Single-Model & 0.5315 & 0.4912 & 0.6761 & 0.5690 \\
+		Our Multi-Model & 0.6370 & 0.6261 & 0.5516 & 0.5865 \\
 	\end{tabular}  
 	\caption{Comparison: Sentiment Negative}
 	\label{tab:results:sentiment_negative}
@@ -210,32 +210,32 @@ In Table~\ref{tab:results:sentiment_negative} the performance of our model class
 	\begin{tabular}{l r r r r r r r r}
 		& True Pos & True Neg & False Pos & False Neg & Accuracy & Precision & Recall & $F_1$ \\
 		\hline
-		Sentiment Negative & 145 & 159 & 99 & 137 & 0.56 & 0.59 & 0.51 & 0.55 \\
-		& 112 & 236 & 59 & 133 & 0.64 & 0.65 & 0.46 & 0.54 \\
+		Sentiment Negative & 167 & 120 & 173 & 80 & 0.53 & 0.49 & 0.68 & 0.57 \\
+		& 139 & 205 & 83 & 113 & 0.64 & 0.63 & 0.55 & 0.59 \\
 		\hline
-		Sentiment Neutral & 190 & 133 & 149 & 68 & 0.60 & 0.56 & 0.74 & 0.64 \\
-		& 216 & 124 & 126 & 74 & 0.63 & 0.63 & 0.75 & 0.68 \\
+		Sentiment Neutral & 178 & 138 & 111 & 113 & 0.59 & 0.62 & 0.61 & 0.61 \\
+		& 199 & 141 & 120 & 80 & 0.63 & 0.62 & 0.71 & 0.67 \\
 		\hline
-		Sentiment Positive & 0 & 533 & 0 & 7 & 0.99 & 0 & 0 & 0 \\
-		& 0 & 535 & 0 & 5 & 0.99 & 0 & 0 & 0 \\
+		Sentiment Positive & 0 & 529 & 0 & 11 & 0.98 & 0 & 0 & 0 \\
+		& 0 & 531 & 0 & 9 & 0.98 & 0 & 0 & 0 \\
 		\hline
-		Off Topic & 0 & 452 & 0 & 88 & 0.84 & 0 & 0 & 0 \\
-		& 11 & 423 & 14 & 92 & 0.80 & 0.44 & 0.11 & 0.17 \\
+		Off Topic & 0 & 458 & 0 & 82 & 0.85 & 0 & 0 & 0 \\
+		& 4 & 451 & 3 & 82 & 0.84 & 0.57 & 0.05 & 0.09 \\
 		\hline
-		Inappropriate & 0 & 504 & 0 & 36 & 0.93 & 0 & 0 & 0 \\
-		& 1 & 483 & 0 & 56 & 0.90 & 1.00 & 0.02 & 0.03 \\
+		Inappropriate & 0 & 497 & 0 & 43 & 0.92 & 0 & 0 & 0 \\
+		& 1 & 487 & 4 & 48 & 0.90 & 0.20 & 0.02 & 0.04 \\
 		\hline
-		Discriminating & 0 & 497 & 0 & 43 & 0.92 & 0 & 0 & 0 \\
-		& 1 & 492 & 3 & 44 & 0.91 & 0.25 & 0.02 & 0.04 \\
+		Discriminating & 0 & 493 & 0 & 47 & 0.91 & 0 & 0 & 0 \\
+		& 0 & 491 & 1 & 48 & 0.91 & 0 & 0 & 0 \\
 		\hline
-		Possibly Feedback & 0 & 531 & 0 & 9 & 0.98 & 0 & 0 & 0 \\
-		& 0 & 527 & 0 & 13 & 0.98 & 0 & 0 & 0 \\
+		Possibly Feedback & 0 & 525 & 0 & 15 & 0.97 & 0 & 0 & 0 \\
+		& 0 & 532 & 0 & 8 & 0.99 & 0 & 0 & 0 \\
 		\hline
-		Personal Stories & 0 & 532 & 0 & 8 & 0.99 & 0 & 0 & 0 \\
-		& 0 & 534 & 0 & 6 & 0.99 & 0 & 0 & 0 \\
+		Personal Stories & 0 & 538 & 0 & 2 & 1.00 & 0 & 0 & 0 \\
+		& 0 & 533 & 0 & 7 & 0.99 & 0 & 0 & 0 \\
 		\hline
-		Arguments Used & 78 & 350 & 51 & 61 & 0.79 & 0.60 & 0.56 & 0.58\\
-		& 99 & 339 & 41 & 61 & 0.81 & 0.71 & 0.62 & 0.66 \\
+		Arguments Used & 85 & 349 & 32 & 74 & 0.80 & 0.73 & 0.53 & 0.62 \\
+		& 107 & 332 & 43 & 58 & 0.81 & 0.71 & 0.65 & 0.68 \\
 	\end{tabular}
 	\caption{Comparison of the performance of the single- (top row in each category) vs the multi-model (bottom row)}
 	\label{tab:results}
@@ -251,8 +251,8 @@ But the LSTM model in the original work had the exact same problem, while other 
 		Schabus et al. (best) & & 0.2353 & 0.4651 & 0.1333 \\
 		Schabus et al. (LSTM) & & 0 & 0 & 0\\
 		\hline
-		Our Single-Model & 0.9870 & 0 & 0 & 0 \\
-		Our Multi-Model & 0.9907 & 0 & 0 & 0 \\
+		Our Single-Model & 0.9796 & 0 & 0 & 0 \\
+		Our Multi-Model & 0.9833 & 0 & 0 & 0 \\
 	\end{tabular}
 	\caption{Comparison: Sentiment Positive}
 	\label{tab:results:sentiment_positive}
@@ -267,8 +267,8 @@ Table~\ref{tab:results:arguments_used} shows the performance on the category \te
 		Schabus et al. (best) & & 0.6105 & 0.6614 & 0.6098 \\
 		Schabus et al. (LSTM) & & 0.5685 & 0.6458 & 0.6047\\
 		\hline
-		Our Single-Model & 0.7926 & 0.6047 & 0.5612 & 0.5821 \\
-		Our Multi-Model & 0.8111 & 0.7071 & 0.6188 & 0.6600 \\
+		Our Single-Model & 0.8037 & 0.7265 & 0.5346 & 0.6159 \\
+		Our Multi-Model & 0.8130 & 0.7133 & 0.6485 & 0.6794 \\
 	\end{tabular}
 	\caption{Comparison: Arguments Used}
 	\label{tab:results:arguments_used}

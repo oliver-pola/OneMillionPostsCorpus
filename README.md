@@ -70,5 +70,5 @@ ArgumentsUsed
 
 ## Results
 Further information like a description of our work, the model and some results can be found in:
-- [Project presentation](doc/presentation.pdf)
+- [Project presentation](doc/presentation.pdf) (slightly outdated model and results)
 - [Project paper](doc/report.pdf)
