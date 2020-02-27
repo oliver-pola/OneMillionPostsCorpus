@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import corpus
 
 lstm_out_list = [32, 64, 96, 128, 160, 192]
-dense_units_list = [16, 32, 48, 64, 80, 96]
+dense_units_list = [8, 16, 32, 48, 64, 80, 96, 112, 128]
 repeats = 3
 
 def all_categories(epochs=50):
@@ -112,15 +112,18 @@ def graph():
     data = np.loadtxt(csv_file, delimiter=',', skiprows=1)
     plt.figure('training meta', figsize=(6, 4))
     plt.title('Evaluation for category = ''ArgumentsUsed''')
-    for lstm_out in lstm_out_list:
+    for lstm_out in [64, 96, 128, 160]: # don't overload graph with lstm_out_list:
         graph_x = []
         graph_y = []
+        graph_e = []
         lstm_data = data[data[:,0] == lstm_out]
         for dense_units in dense_units_list:
             dense_data = lstm_data[lstm_data[:,1] == dense_units]
             graph_x.append(dense_units)
             graph_y.append(np.mean(dense_data[:,2]))
+            graph_e.append(np.std(dense_data[:,2]))
         plt.plot(graph_x, graph_y, label=f'{lstm_out} LSTM units')
+        # plt.errorbar(graph_x, graph_y, yerr=graph_e, label=f'{lstm_out} LSTM units')
     plt.xlabel('dense units')
     plt.ylabel('$F_1$')
     plt.legend()

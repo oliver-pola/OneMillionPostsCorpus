@@ -151,12 +151,18 @@ This model we call \textit{Single-Model} and it is similar to Figure~\ref{fig:mo
 
 \subsection{Hyper Parameters}
 
-The hyper parameters of our model are justified by a search over a range of values, shown in Figure~\ref{fig:hyper_params}. We completed a full training with each set of parameters. Finally the best model measured by $F_1$ score is applied. A first impression was that out model performs well in the \textit{Arguments Used} category, so we concentrated to optimize for that category.
+The hyper parameters of our model are justified by a search over a range of values, shown in Figure~\ref{fig:hyper_params}. 
+We completed a full training with each set of parameters. Finally the best model measured by $F_1$ score on the validation set is applied. 
+A first impression was that out model performs well in the \textit{Arguments Used} category, so we concentrated to optimize for that category.
 
-...\todo{Graph comparing different training parameters}
+The training results are evaluated on two different systems and averaged over a total of six runs. 
+Not shown in Figure~\ref{fig:hyper_params} is data we've collected for 32 and 192 LSTM units as well, because these don't contribute to our conclusion. 
+We have chosen 128 LSTM units (having this bidirectional results in 256 trainable parameters) and 64 dense units, because we consider that peak as more  
+noticeable compared to the 160 LSTM curve, it had a smaller standard deviation and we preferred to have fewer parameters.
+
 \begin{figure}[h!]
 	\centering
-	TODO
+	\includegraphics[trim={0.1cm 0cm 0.7cm 0.7cm},clip,width=0.5\textwidth]{img/training_meta}
 	\caption{Search for best model based on different hyper parameters}
 	\label{fig:hyper_params}
 \end{figure}
