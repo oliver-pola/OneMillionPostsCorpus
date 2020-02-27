@@ -131,6 +131,33 @@ def graph():
     plt.show()
 
 
+def graph2():
+    csv_file = f'output/All/training_meta.csv'
+    if not os.path.exists(csv_file):
+        print('No data to build graph')
+        return
+    data = np.loadtxt(csv_file, delimiter=',', skiprows=1)
+    plt.figure('training meta 2', figsize=(6, 4))
+    plt.title('Evaluation for category = ''ArgumentsUsed''')
+    for dense_units in [32, 48, 64, 80]: # don't overload graph with dense_units_list:
+        graph_x = []
+        graph_y = []
+        graph_e = []
+        dense_data = data[data[:,1] == dense_units]
+        for lstm_out in lstm_out_list:
+            lstm_data = dense_data[dense_data[:,0] == lstm_out]
+            graph_x.append(lstm_out)
+            graph_y.append(np.mean(lstm_data[:,2]))
+            graph_e.append(np.std(lstm_data[:,2]))
+        plt.plot(graph_x, graph_y, label=f'{dense_units} dense units')
+        # plt.errorbar(graph_x, graph_y, yerr=graph_e, label=f'{lstm_out} LSTM units')
+    plt.xlabel('LSTM units')
+    plt.ylabel('$F_1$')
+    plt.legend()
+    plt.savefig(f'output/All/training_meta2.png')
+    plt.show()
+
+
 class Logger(object):
     # see https://stackoverflow.com/questions/616645/how-to-duplicate-sys-stdout-to-a-log-file
     # and https://stackoverflow.com/questions/20525587/python-logging-in-multiprocessing-attributeerror-logger-object-has-no-attrib
@@ -161,6 +188,8 @@ def run():
         usage()
     elif sys.argv[1] == 'Graph':
         graph()
+    elif sys.argv[1] == 'Graph2':
+        graph2()
     elif sys.argv[1] not in ['All'] + list(corpus.categories):
         usage()
     else:
