@@ -53,7 +53,7 @@ The purpose of this term paper is to summarize the development effort put into t
 
 Many work has been done on NLP tasks using English language.
 To contribute to the knowledge about German language, similar work has been repeated on large collections of german text.
-One work produced and analyzed the \textit{One Million Posts Corpus} described in the next chapter in more detail.~\cite{Schabus17, Schabus18}
+\newcite{Schabus17} produced and analyzed the \textit{One Million Posts Corpus} described in the next chapter in more detail. Later \newcite{Schabus18} improved their results using other methods.
 
 Our work will use that corpus and tries to reproduce some of the original work.
 The focus lies on applying the recurrent deep learning method LSTM~\cite{lstm}.
@@ -87,7 +87,7 @@ The second column shows that in this case 580 posts where indeed \textit{Off Top
 		Personal Stories & 9336 & 1625 & 17\% & 47 & 1\%\\
 		Arguments Used & 3599 & 1022 & 28\%\\
 	\end{tabular}
-	\caption{Categories of posts and their distribution according to \cite{Schabus17}}
+	\caption{Categories of posts and their distribution according to \newcite{Schabus17}}
 	\label{tab:categories}
 \end{table}
 
@@ -164,6 +164,8 @@ The hyper parameters of our model are justified by a search over a range of valu
 
 \subsection{Training}
 
+The dataset of 3599 fully labelled posts is split into a training set of 3059 posts and a validation set of 540 posts (15\%).
+
 The training itself is supervised by using automatic learning rate adaptation (\textit{ReduceLROnPlateau}) and \textit{EarlyStopping}, which helps to reduce the overall training time.
 Figure~\ref{fig:training_loss} shows the progress during training and the early stopping method applied, as training ends when validation loss starts to increase.
 
@@ -195,39 +197,6 @@ In Table~\ref{tab:results:sentiment_negative} the performance of our model class
 	\end{tabular}  
 	\caption{Comparison: Sentiment Negative}
 	\label{tab:results:sentiment_negative}
-\end{table}
-
-Table~\ref{tab:results:sentiment_positive} is an example of the consequences of unbalanced data. While the accuracy is at around 99\% the precision, recall and $F_1$ score is zero. As the corpus only contains 1\% of positively labelled data for this category the model learns to predict always zero.
-But the LSTM model in the original work had the exact same problem, while other models lead to non-zero but still unsatisfying scores.
-\begin{table}[h!]
-	\centering\scriptsize
-	\begin{tabular}{l r r r r r}
-		& Accuracy & Precision & Recall & $F_1$ \\
-		\hline
-		Schabus et al. (best) & & 0.2353 & 0.4651 & 0.1333 \\
-		Schabus et al. (LSTM) & & 0 & 0 & 0\\
-		\hline
-		Our Single-Model & 0.9870 & 0 & 0 & 0 \\
-		Our Multi-Model & 0.9907 & 0 & 0 & 0 \\
-	\end{tabular}
-	\caption{Comparison: Sentiment Positive}
-	\label{tab:results:sentiment_positive}
-\end{table}
-
-Table~\ref{tab:results:arguments_used} shows the performance on the category \textit{Arguments Used}. In this case our multi-model LSTM outperforms the original model, as can be seen by comparing the $F_1$ score. This is especially noteworthy as this category is only applied positively in 28\% of the cases.  
-\begin{table}[h!]
-	\centering\scriptsize
-	\begin{tabular}{l r r r r r}
-		& Accuracy & Precision & Recall & $F_1$ \\
-		\hline
-		Schabus et al. (best) & & 0.6105 & 0.6614 & 0.6098 \\
-		Schabus et al. (LSTM) & & 0.5685 & 0.6458 & 0.6047\\
-		\hline
-		Our Single-Model & 0.7926 & 0.6047 & 0.5612 & 0.5821 \\
-		Our Multi-Model & 0.8111 & 0.7071 & 0.6188 & 0.6600 \\
-	\end{tabular}
-	\caption{Comparison: Arguments Used}
-	\label{tab:results:arguments_used}
 \end{table}
 
 \begin{table*}
@@ -265,6 +234,39 @@ Table~\ref{tab:results:arguments_used} shows the performance on the category \te
 	\caption{Comparison of the performance of the single- (top row in each category) vs the multi-model (bottom row)}
 	\label{tab:results}
 \end{table*}
+
+Table~\ref{tab:results:sentiment_positive} is an example of the consequences of unbalanced data. While the accuracy is at around 99\% the precision, recall and $F_1$ score is zero. As the corpus only contains 1\% of positively labelled data for this category the model learns to predict always zero.
+But the LSTM model in the original work had the exact same problem, while other models lead to non-zero but still unsatisfying scores.
+\begin{table}[h!]
+	\centering\scriptsize
+	\begin{tabular}{l r r r r r}
+		& Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		Schabus et al. (best) & & 0.2353 & 0.4651 & 0.1333 \\
+		Schabus et al. (LSTM) & & 0 & 0 & 0\\
+		\hline
+		Our Single-Model & 0.9870 & 0 & 0 & 0 \\
+		Our Multi-Model & 0.9907 & 0 & 0 & 0 \\
+	\end{tabular}
+	\caption{Comparison: Sentiment Positive}
+	\label{tab:results:sentiment_positive}
+\end{table}
+
+Table~\ref{tab:results:arguments_used} shows the performance on the category \textit{Arguments Used}. In this case our multi-model LSTM outperforms the original model, as can be seen by comparing the $F_1$ score. This is especially noteworthy as this category is only applied positively in 28\% of the cases.  
+\begin{table}[h!]
+	\centering\scriptsize
+	\begin{tabular}{l r r r r r}
+		& Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		Schabus et al. (best) & & 0.6105 & 0.6614 & 0.6098 \\
+		Schabus et al. (LSTM) & & 0.5685 & 0.6458 & 0.6047\\
+		\hline
+		Our Single-Model & 0.7926 & 0.6047 & 0.5612 & 0.5821 \\
+		Our Multi-Model & 0.8111 & 0.7071 & 0.6188 & 0.6600 \\
+	\end{tabular}
+	\caption{Comparison: Arguments Used}
+	\label{tab:results:arguments_used}
+\end{table}
 
 
 \section{Conclusion}
