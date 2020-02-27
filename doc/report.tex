@@ -44,7 +44,8 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-The purpose of this term paper is to summarize the development effort put into the creation of a multi-model neural network for category classification. This contains used preprocessing steps of the initial corpus, integration of an embedding layer and the actual deep learning network. Finally, an evaluation is given as well as ideas for future work. \todo{we conclude that...}
+The purpose of this term paper is to summarize the development effort put into the creation of a multi-model neural network for category classification. This contains used preprocessing steps of the initial corpus, integration of an embedding layer and the actual deep learning network.
+Finally, an evaluation is given and we conclude that using a multi-model supports the training process.
 
  
 \end{abstract}
@@ -162,7 +163,7 @@ noticeable compared to the 160 LSTM curve, it had a smaller standard deviation a
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[trim={0.1cm 0cm 0.7cm 0.7cm},clip,width=0.5\textwidth]{img/training_meta}
+	\includegraphics[trim={0.1cm 0cm 0.7cm 0.7cm},clip,width=0.4\textwidth]{img/training_meta}
 	\caption{Search for best model based on different hyper parameters}
 	\label{fig:hyper_params}
 \end{figure}
@@ -209,7 +210,7 @@ This therefore results in a lower $F_1$ score.
 \end{table}
 
 \begin{table*}
-	\centering\small
+	\centering\scriptsize
 	\begin{tabular}{l r r r r r r r r}
 		& True Pos & True Neg & False Pos & False Neg & Accuracy & Precision & Recall & $F_1$ \\
 		\hline
@@ -282,7 +283,14 @@ This is especially noteworthy as this category is only applied positively in 28\
 
 \section{Conclusion}
 
-\todo{we conclude that...}
+As expected, our results show that predictions based on highly imbalanced label data is hard. Having enough data, some method should be applied that does not reflect the natural ratio. The biased addition of labels in this corpus may not be a good general approach for statistics, but useful for this task.
+
+Considering our single model one could reason that all the hidden layers are used to generate features specialized to predict that specific category. 
+In the multi model on the other hand the network has to generate some global features and only a few specialized ones per category. 
+Considering a specific category only, this should result in a better performance of the single model.
+But in our case the multi model shows better scores in general. 
+The cause may be that high specialization leads to overfitting that we could not prevent by regularization methods.
+We like to conclude that learning multiple targets at once does help to generate balanced features.
 
 
 \bibliography{references}
