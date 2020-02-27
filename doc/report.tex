@@ -102,7 +102,7 @@ Having only a few positive labels will encourage the model to predict always neg
 
 Also there is the \textit{Off Topic} category with probably enough positives, but technically we will consider single posts only, out of their context among other posts belonging to certain articles. But the latter would be necessary to detect something as off-topic.
 
-To summarize, we expect to produce useful results only in the \textit{Sentiment Negative}, \textit{Sentiment Neutral} and \textit{Arguments Used} categories only.
+To summarize, we expect to produce useful results in the \textit{Sentiment Negative}, \textit{Sentiment Neutral} and \textit{Arguments Used} categories only.
 
 \section{Embedding}
 
@@ -118,7 +118,7 @@ Since a neural network expects a fixed input size (at least within one batch), t
 We chose the number 80 based on the maximum length of posts in the training data to be 161 and the average 37 words, also having memory and processing time in mind.
 
 The standard approach applying such an embedding seems to be generating an embedding matrix, that contains the vectors for all the words in the vocabulary and then have the input to be the indices of the words. 
-This matrix is then fed into the preprocessing layer of the network. With this approach we had some problems due to memory limitations on some systems. 
+This matrix is then fed into the first layer of the network. With this approach we had some problems due to memory limitations on some systems. 
 Also feeding the embedding matrix into the network and using Tensorflow on a GPU means to load that embedding matrix into the limited GPU memory. 
 Many rows in that matrix will not be used in the current batch, some of them will in fact never be used.
 
@@ -182,14 +182,17 @@ Figure~\ref{fig:training_loss} shows the progress during training and the early 
 	\label{fig:training_loss}
 \end{figure}
 
-The \textit{categorical accuracy} is shown in Figure~\ref{fig:training_loss} as summary over all categories. In fact it is the average of the accuracies in each category, weighted by the rate of positive labels. Later only accuracies for single categories, extracted from a vector of predictions, are analized.
+The \textit{categorical accuracy} is shown in Figure~\ref{fig:training_loss} as summary over all categories. In fact it is the average of the accuracies in each category, weighted by the rate of positive labels. Later only accuracies for single categories, extracted from a vector of predictions, are analyzed.
 
 
 \section{Results}
+
 In this paragraph the performance of the models evaluated by \newcite{Schabus17} and us are compared.
 While in Table~\ref{tab:results} all measurements of the single-model as well as the multi-model of every category is shown, a few categories are highlighted.
 
-In Table~\ref{tab:results:sentiment_negative} the performance of our model classifying the category \textit{Sentiment Negative} is shown. As the corpus for this category is nearly equally balanced this is a good starting point for a comparison. While the precision of our single- as well as the multi-model is higher, the recall is much lower that the one described in the original paper. This therefore results in a lower $F_1$ score.
+In Table~\ref{tab:results:sentiment_negative} the performance of our model classifying the category \textit{Sentiment Negative} is shown. As the corpus for this category is nearly equally balanced this is a good starting point for a comparison. 
+While the precision of our multi-model is higher, the recall is much lower than the one described in the original paper. 
+This therefore results in a lower $F_1$ score.
 \begin{table}[h!]
 	\centering\scriptsize
 	\begin{tabular}{l r r r r r}
@@ -258,7 +261,9 @@ But the LSTM model in the original work had the exact same problem, while other 
 	\label{tab:results:sentiment_positive}
 \end{table}
 
-Table~\ref{tab:results:arguments_used} shows the performance on the category \textit{Arguments Used}. In this case our multi-model LSTM outperforms the original model, as can be seen by comparing the $F_1$ score. This is especially noteworthy as this category is only applied positively in 28\% of the cases.  
+Table~\ref{tab:results:arguments_used} shows the performance on the category \textit{Arguments Used}.
+In this case both of our LSTM models outperform the original model, as can be seen by comparing the $F_1$ score.
+This is especially noteworthy as this category is only applied positively in 28\% of the cases.  
 \begin{table}[h!]
 	\centering\scriptsize
 	\begin{tabular}{l r r r r r}
