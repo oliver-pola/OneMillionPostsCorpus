@@ -12,3 +12,7 @@
 *.vrb
 *.synctex.gz
 !img/*.pdf
+
+# Publish when finished
+!presentation.pdf
+#!report.pdf
