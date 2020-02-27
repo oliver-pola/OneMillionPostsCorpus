@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import corpus
 
-lstm_out_list = [32, 64, 96]
+lstm_out_list = [32, 64, 96, 128, 160, 192]
 dense_units_list = [16, 32, 48, 64, 80, 96]
 repeats = 3
 
