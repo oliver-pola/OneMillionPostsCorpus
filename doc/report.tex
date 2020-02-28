@@ -157,13 +157,14 @@ We completed a full training with each set of parameters. Finally the best model
 A first impression was that out model performs well in the \textit{Arguments Used} category, so we concentrated to optimize for that category.
 
 The training results are evaluated on two different systems and averaged over a total of six runs. 
-Not shown in Figure~\ref{fig:hyper_params} is data we've collected for 32 and 192 LSTM units as well, because these don't contribute to our conclusion. 
-We have chosen 128 LSTM units (having this bidirectional results in 256 trainable parameters) and 64 dense units, because we consider that peak as more  
-noticeable compared to the 160 LSTM curve, it had a smaller standard deviation and we preferred to have fewer parameters.
+Figure~\ref{fig:hyper_params} (top) excludes data we've collected for 32 and 192 LSTM units for a better overwiev, whereas Figure~\ref{fig:hyper_params} (bottom) is limited to a selection of dense units around the maximum.
+The bottom curves show that there is a noticable jump in the networks ability when increasing from 96 to 128 LSTM units.
+We have chosen 128 LSTM units (having this bidirectional results in 256 trainable parameters) and 64 dense units, because we consider that peak as more pronounced compared to the 160 LSTM curve, it had a smaller standard deviation and we preferred to have fewer parameters.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[trim={0.1cm 0cm 0.7cm 0.7cm},clip,width=0.4\textwidth]{img/training_meta}
+	\includegraphics[trim={0.1cm 0cm 0.7cm 1.2cm},clip,width=0.4\textwidth]{img/training_meta2}
 	\caption{Search for best model based on different hyper parameters}
 	\label{fig:hyper_params}
 \end{figure}
@@ -185,29 +186,6 @@ Figure~\ref{fig:training_loss} shows the progress during training and the early 
 
 The \textit{categorical accuracy} is shown in Figure~\ref{fig:training_loss} as summary over all categories. In fact it is the average of the accuracies in each category, weighted by the rate of positive labels. Later only accuracies for single categories, extracted from a vector of predictions, are analyzed.
 
-
-\section{Results}
-
-In this paragraph the performance of the models evaluated by \newcite{Schabus17} and us are compared.
-While in Table~\ref{tab:results} all measurements of the single-model as well as the multi-model of every category is shown, a few categories are highlighted.
-
-In Table~\ref{tab:results:sentiment_negative} the performance of our model classifying the category \textit{Sentiment Negative} is shown. As the corpus for this category is nearly equally balanced this is a good starting point for a comparison. 
-While the precision of our multi-model is higher, the recall is much lower than the one described in the original paper. 
-This therefore results in a lower $F_1$ score.
-\begin{table}[h!]
-	\centering\scriptsize
-	\begin{tabular}{l r r r r r}
-		& Accuracy & Precision & Recall & $F_1$ \\
-		\hline
-		Schabus et al. (best) & & 0.5842 & 0.7197 & 0.6137 \\
-		Schabus et al. (LSTM) & & 0.5349 & 0.7197 & 0.6137 \\
-		\hline
-		Our Single-Model & 0.5315 & 0.4912 & 0.6761 & 0.5690 \\
-		Our Multi-Model & 0.6370 & 0.6261 & 0.5516 & 0.5865 \\
-	\end{tabular}  
-	\caption{Comparison: Sentiment Negative}
-	\label{tab:results:sentiment_negative}
-\end{table}
 
 \begin{table*}
 	\centering\scriptsize
@@ -244,6 +222,29 @@ This therefore results in a lower $F_1$ score.
 	\caption{Comparison of the performance of the single- (top row in each category) vs the multi-model (bottom row)}
 	\label{tab:results}
 \end{table*}
+
+\section{Results}
+
+In this paragraph the performance of the models evaluated by \newcite{Schabus17} and us are compared.
+While in Table~\ref{tab:results} all measurements of the single-model as well as the multi-model of every category is shown, a few categories are highlighted.
+
+In Table~\ref{tab:results:sentiment_negative} the performance of our model classifying the category \textit{Sentiment Negative} is shown. As the corpus for this category is nearly equally balanced this is a good starting point for a comparison. 
+While the precision of our multi-model is higher, the recall is much lower than the one described in the original paper. 
+This therefore results in a lower $F_1$ score.
+\begin{table}[h!]
+	\centering\scriptsize
+	\begin{tabular}{l r r r r r}
+		& Accuracy & Precision & Recall & $F_1$ \\
+		\hline
+		Schabus et al. (best) & & 0.5842 & 0.7197 & 0.6137 \\
+		Schabus et al. (LSTM) & & 0.5349 & 0.7197 & 0.6137 \\
+		\hline
+		Our Single-Model & 0.5315 & 0.4912 & 0.6761 & 0.5690 \\
+		Our Multi-Model & 0.6370 & 0.6261 & 0.5516 & 0.5865 \\
+	\end{tabular}  
+	\caption{Comparison: Sentiment Negative}
+	\label{tab:results:sentiment_negative}
+\end{table}
 
 Table~\ref{tab:results:sentiment_positive} is an example of the consequences of unbalanced data. While the accuracy is at around 99\% the precision, recall and $F_1$ score is zero. As the corpus only contains 1\% of positively labelled data for this category the model learns to predict always zero.
 But the LSTM model in the original work had the exact same problem, while other models lead to non-zero but still unsatisfying scores.
