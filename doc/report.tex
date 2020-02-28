@@ -44,28 +44,28 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-The purpose of this term paper is to summarize the development effort put into the creation of a multi-model neural network for category classification. This contains used preprocessing steps of the initial corpus, integration of an embedding layer and the actual deep learning network.
-Finally, an evaluation is given and we conclude that using a multi-model supports the training process.
+The purpose of this term paper is to summarize the development effort put into the creation of a multi-label neural network for text classification. The paper covers the employed preprocessing steps of the initial corpus, integration of an embedding layer and the actual deep learning network.
+Finally, an evaluation is given. We conclude that using a multi-model supports the training process and thus, improves the model predictions.
 
  
 \end{abstract}
 
 \section{Introduction}
 
-Many work has been done on NLP tasks using English language.
-To contribute to the knowledge about German language, similar work has been repeated on large collections of german text.
+Extensive work has been done on NLP tasks concerning the English language.
+To contribute to the knowledge about German language, similar work has been repeated on large collections of German text.
 \newcite{Schabus17} produced and analyzed the \textit{One Million Posts Corpus} described in the next chapter in more detail. Later \newcite{Schabus18} improved their results using other methods.
 
-Our work will use that corpus and tries to reproduce some of the original work.
-The focus lies on applying the recurrent deep learning method LSTM~\cite{lstm}.
+Our work will use that corpus to try and reproduce some of the original work.
+The focus lies on applying the recurrent deep learning method LSTM~\cite{lstm}, which was also evaluated by the original authors.
 
 The corpus contains labelled data for multiple categories.
-As the previous work did apply classifiers for each category on its own, we try to contribute another approach, using all categores at once.\\
+As the previous work did apply classifiers for each category on its own, we try to contribute another approach, using all categories at once.\\
 
 Our code is publicly available on GitHub\footnote{Our code available at \url{https://github.com/oliver-pola/OneMillionPostsCorpus/}}.
 
-\section{Corpus}
-The corpus\footnote{Corpus available at \url{https://ofai.github.io/million-post-corpus/}} used stems from the Austrian newspaper \textit{DER STANDARD}\footnote{DER STANDARD \url{https://www.derstandard.at}} which contains posts that are labelled according to nine distinct categories. The posts have been written during a time period from 2015-2016 and contain 1 million unlabelled posts as well as 11,773 hand-labelled posts.
+\section{One Million Posts Corpus}
+The corpus' data\footnote{Corpus available at \url{https://ofai.github.io/million-post-corpus/}} originates from the website of the Austrian newspaper \textit{DER STANDARD}\footnote{DER STANDARD \url{https://www.derstandard.at}} and represents User generated Posts. The dataset contains posts that are labelled according to nine distinct categories. The labeling process on these posts was performed by forum moderators. The posts have been written during a time period from 2015-2016 and contain 1 million unlabelled posts as well as 11,773 hand-labelled posts.
 
 
 \subsection{Categories}
@@ -93,13 +93,13 @@ The second column shows that in this case 580 posts where indeed \textit{Off Top
 \end{table}
 
 As previously mentioned there are 11,773 labelled posts. This means after labelling 3599 posts in each category, there were another 2439 posts labeled in the \textit{Possibly Feedback} and yet another 5737 posts in the \textit{Personal Stories} category only.
-These additional posts were strongly biased towards positive labels, so that the category finally applies to 22\% / 17\% of posts, whereas in a random sample like the 3599 posts it is rather 2\% / 1\%.
+These additional posts were strongly biased towards positive labels, so that the category overall applies to 22\% / 17\% of posts, whereas in a random sample like the 3599 posts it is rather 2\% / 1\%.
 Besides this questionable labelling method, the additional posts can't be used in our method for technical reasons.
 As we want to build a model that is capable of identifying multiple categories at once we use only posts that are annotated as 0 or 1 for each category.
 So only those 3599 posts can be used in our approach.  
 
 Looking at the percentage where the categories do apply, it becomes already clear that most of them will be problematic. 
-Having only a few positive labels will encourage the model to predict always negative, as this will result in a 99\% accuracy when the positive labels are 1\% only, like in the \textit{Sentiment Positive} category. With that small set of training data it is also not applicable to omit some of the negative posts to train with an artificial balance around 50\% each.
+Having only a few positive labels will encourage the model to always predict negative, as this will result in a 99\% accuracy when the positive labels are 1\% only, like in the \textit{Sentiment Positive} category. With that small of a dataset for training it is also not applicable to omit some of the negative posts to train with an artificial balance around 50\% each.
 
 Also there is the \textit{Off Topic} category with probably enough positives, but technically we will consider single posts only, out of their context among other posts belonging to certain articles. But the latter would be necessary to detect something as off-topic.
 
@@ -107,25 +107,25 @@ To summarize, we expect to produce useful results in the \textit{Sentiment Negat
 
 \section{Embedding}
 
-Embedding is the task to preproccess the textual input, our posts, to some numerical vectors that can be calculated with in a neural network. 
+Embedding is the task to transform the textual input, our posts, into some numerical vectors that can be used for calculation within a neural network. 
 We use Word2Vec~\cite{word2vec}, where the high dimensionality of the resulting vector tries to encode the semantic of words. 
 Words that often appear in similar context are considered to have similar meaning and appear in close distance in the resulting vector space.
-Word2Vec is a learning task on its own that we do not perform but use a pretrained german model\footnote{German Word2Vec model available at \url{https://deepset.ai/german-word-embeddings}} that uses a vocabulary of 1,309,281 words, each embedded into a vector of size 300.
+Word2Vec is a learning task on its own that we do not perform ourselves. Instead, we use a pretrained German model\footnote{German Word2Vec model available at \url{https://deepset.ai/german-word-embeddings}} that uses a vocabulary of 1,309,281 words, each embedded into a vector of size 300.
 The model is loaded and applied by Gensim\footnote{Gensim \url{https://radimrehurek.com/gensim/}}~\cite{gensim}.
 
-A post therefor is split into words and each word embedded into a vector. Having multiple words in a post results to a list of vectors or rather a matrix. 
+Every post is therefore split into words and each word is then embedded into a vector. Having multiple words in a post results in a list of vectors or rather a matrix. 
 Words not found in the vocabulary will be skipped in the process. 
 Since a neural network expects a fixed input size (at least within one batch), the matrix is padded to the size 80$\times$300, cutting off too long posts and filling short ones with zeroes at the end. 
 We chose the number 80 based on the maximum length of posts in the training data to be 161 and the average 37 words, also having memory and processing time in mind.
 
-The standard approach applying such an embedding seems to be generating an embedding matrix, that contains the vectors for all the words in the vocabulary and then have the input to be the indices of the words. 
+The standard approach to applying such an embedding seems to be generating an embedding matrix, that contains the vectors for all the words in the vocabulary and then have the input be the indices of the words. 
 This matrix is then fed into the first layer of the network. With this approach we had some problems due to memory limitations on some systems. 
 Also feeding the embedding matrix into the network and using Tensorflow on a GPU means to load that embedding matrix into the limited GPU memory. 
 Many rows in that matrix will not be used in the current batch, some of them will in fact never be used.
 
 Instead we considered the embedding as a preprocessing step, using Gensim to go from words to vectors directly.
 The input of the network will then be vectors already and no embedding matrix needs to be stored in GPU memory.
-Since we also do the preprocessing only once and then repeatedly feed the vectors into the network, the embedding is also done only once instead of embedding the same post again in each epoch.
+Since we also only do the preprocessing once and then repeatedly feed the vectors into the network, the embedding is also done only once instead of embedding the same post again in each epoch.
 Also this opens up the ability to free the memory of the embedding model after preprocessing is done.
 That reduced the memory needs of our model and we could use less advanced hardware for training, only dealing with processing time.
 
@@ -283,9 +283,9 @@ This is especially noteworthy as this category is only applied positively in 28\
 
 \section{Conclusion}
 
-As expected, our results show that predictions based on highly imbalanced label data is hard. Having enough data, some method should be applied that does not reflect the natural ratio. The biased addition of labels in this corpus may not be a good general approach for statistics, but useful for this task.
+As expected, our results show that predictions based on highly imbalanced labeled data is hard. Having enough data, some method should be applied that does not reflect the natural ratio. The biased addition of labels in this corpus may not be a good general approach for statistics, but useful for this task.
 
-Considering our single model one could reason that all the hidden layers are used to generate features specialized to predict that specific category. 
+Considering our single category model, one could reason that all the hidden layers are used to generate features specialized to predict that specific category. 
 In the multi model on the other hand the network has to generate some global features and only a few specialized ones per category. 
 Considering a specific category only, this should result in a better performance of the single model.
 But in our case the multi model shows better scores in general. 
